@@ -19,13 +19,13 @@ export function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 backdrop-blur-md ${
         scrolled
-          ? "border-b border-[#22282B] bg-[#0E1113]/90 backdrop-blur-md shadow-2xl"
+          ? "border-b border-[#22282B]/60 bg-[#0E1113]/40"
           : "border-b border-transparent bg-transparent"
       }`}
     >
-      <Container className="flex h-16 items-center justify-between">
+      <Container className="flex h-16 items-center justify-between gap-2">
         <Logo />
         <NavBar />
         <MobileNav />
