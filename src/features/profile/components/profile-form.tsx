@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Profile } from "@/generated/prisma/client";
 import { updateProfileAction, ProfileActionResult } from "../mutations";
 
@@ -9,13 +10,22 @@ type ProfileFormProps = {
 };
 
 export function ProfileForm({ profile }: ProfileFormProps) {
+  const router = useRouter();
   const [state, formAction, isPending] = useActionState<ProfileActionResult | null, FormData>(
     updateProfileAction,
     null
   );
 
+  useEffect(() => {
+    if (state?.success) {
+      router.refresh();
+    }
+  }, [state?.success, router]);
+
   return (
     <form action={formAction} className="space-y-6">
+      <input type="hidden" name="id" value={profile.id} />
+
       {state?.error && (
         <div className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
           {state.error}

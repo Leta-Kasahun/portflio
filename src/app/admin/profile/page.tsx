@@ -1,6 +1,8 @@
 import { getProfile } from "@/features/profile/queries";
 import { ProfileForm } from "@/features/profile/components/profile-form";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminProfilePage() {
   const profile = await getProfile();
 
@@ -16,7 +18,7 @@ export default async function AdminProfilePage() {
       </div>
 
       <div className="rounded-xl border border-[#22282B] bg-[#171B1D] p-6 shadow-xl sm:p-8">
-        <ProfileForm profile={profile} />
+        <ProfileForm key={profile.id + "_" + (profile.updatedAt?.toISOString() || "")} profile={profile} />
       </div>
     </div>
   );

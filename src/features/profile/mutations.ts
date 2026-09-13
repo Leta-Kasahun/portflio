@@ -54,11 +54,15 @@ export async function updateProfileAction(
   const data = validation.data;
 
   try {
-    const existing = await prisma.profile.findFirst();
+    const profileId = (formData.get("id") as string) || null;
 
-    if (existing) {
+    let targetProfile = profileId
+      ? await prisma.profile.findUnique({ where: { id: profileId } })
+      : await prisma.profile.findFirst({ orderBy: { updatedAt: "desc" } });
+
+    if (targetProfile) {
       await prisma.profile.update({
-        where: { id: existing.id },
+        where: { id: targetProfile.id },
         data: {
           name: data.name,
           title: data.title,
@@ -69,6 +73,10 @@ export async function updateProfileAction(
           imageUrl: data.imageUrl || null,
           resumeUrl: data.resumeUrl || null,
         },
+      });
+
+      await prisma.profile.deleteMany({
+        where: { id: { not: targetProfile.id } },
       });
     } else {
       await prisma.profile.create({
@@ -85,9 +93,10 @@ export async function updateProfileAction(
       });
     }
 
-    revalidatePath("/admin/profile");
-    revalidatePath("/admin");
-    revalidatePath("/");
+    revalidatePath("/", "layout");
+    revalidatePath("/about", "page");
+    revalidatePath("/admin/profile", "page");
+    revalidatePath("/admin", "layout");
 
     return { success: true };
   } catch {
