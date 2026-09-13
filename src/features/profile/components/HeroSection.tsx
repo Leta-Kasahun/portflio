@@ -42,6 +42,13 @@ export function HeroSection({ profile, socialLinks }: HeroSectionProps) {
             Explore Projects &rarr;
           </a>
 
+          <a
+            href="/contact"
+            className="rounded-lg border border-[#22282B] bg-transparent px-6 py-3 font-sans text-sm font-medium text-white transition-all hover:border-[#3FC7B0] hover:bg-[#3FC7B0] hover:text-[#0E1113]"
+          >
+            Contact
+          </a>
+
           {profile.resumeUrl ? (
             <a
               href={profile.resumeUrl}
@@ -52,13 +59,6 @@ export function HeroSection({ profile, socialLinks }: HeroSectionProps) {
               Resume (PDF)
             </a>
           ) : null}
-
-          <a
-            href="/contact"
-            className="rounded-lg border border-[#22282B] bg-transparent px-6 py-3 font-sans text-sm font-medium text-[#8A9295] transition-all hover:border-[#8A9295] hover:text-[#E7EAEA]"
-          >
-            Contact
-          </a>
         </div>
 
         {socialLinks.length > 0 && (

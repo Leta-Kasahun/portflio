@@ -9,43 +9,71 @@ export function Logo({ compact = false, className = "" }: LogoProps) {
   return (
     <Link
       href="/"
-      className={`group inline-flex items-center gap-3 transition-colors ${className}`}
+      className={`group inline-flex items-center gap-2 sm:gap-3 transition-colors shrink-0 ${className}`}
+      aria-label="Leta Kasahun Home"
     >
-      <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#22282B] bg-[#171B1D] p-2 transition-colors group-hover:border-[#3FC7B0]">
+      <div className="relative flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-tl-xl rounded-br-xl rounded-tr-none rounded-bl-none border border-[#22282B] bg-[#171B1D] p-1.5 transition-all duration-300 ease-out group-hover:border-[#3FC7B0] group-hover:shadow-[0_0_15px_rgba(63,199,176,0.25)] group-hover:scale-105">
         <svg
-          viewBox="0 0 32 32"
+          viewBox="0 0 36 36"
           fill="none"
+          xmlns="http://www.w3.org/2000/svg"
           className="h-full w-full"
         >
+          <defs>
+            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#3FC7B0" />
+              <stop offset="100%" stopColor="#5EEAD4" />
+            </linearGradient>
+          </defs>
+
           <path
-            d="M16 2L28 8.5V23.5L16 30L4 23.5V8.5L16 2Z"
+            d="M 6 13 V 6 H 13"
             stroke="#3FC7B0"
-            strokeWidth="2"
+            strokeWidth="1.6"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="transition-colors group-hover:stroke-white"
+            className="transition-opacity duration-300 group-hover:stroke-white"
           />
           <path
-            d="M16 16L28 8.5M16 16V30M16 16L4 8.5"
+            d="M 30 23 V 30 H 23"
             stroke="#3FC7B0"
-            strokeWidth="1.5"
+            strokeWidth="1.6"
             strokeLinecap="round"
             strokeLinejoin="round"
-            strokeOpacity="0.7"
+            className="transition-opacity duration-300 group-hover:stroke-white"
           />
-          <circle cx="16" cy="16" r="2.5" fill="#3FC7B0" />
+
+          <path
+            d="M 11 11 V 24 H 17"
+            stroke="url(#logoGrad)"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          <path
+            d="M 21 11 V 24"
+            stroke="#E7EAEA"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            className="transition-colors duration-300 group-hover:stroke-[#3FC7B0]"
+          />
+          <path
+            d="M 27 12 L 21 17.5 L 27 24"
+            stroke="url(#logoGrad)"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          <circle cx="21" cy="17.5" r="1.5" fill="#3FC7B0" />
         </svg>
       </div>
 
       {!compact && (
-        <div className="flex flex-col">
-          <span className="font-mono text-xs font-semibold tracking-wider uppercase text-[#E7EAEA] transition-colors group-hover:text-[#3FC7B0]">
-            Leta Kasahun
-          </span>
-          <span className="font-mono text-[10px] text-[#8A9295]">
-            Software Engineer
-          </span>
-        </div>
+        <span className="font-mono text-xs sm:text-[13px] font-light tracking-[0.14em] uppercase text-[#E7EAEA] transition-colors duration-300 group-hover:text-white shrink-0 whitespace-nowrap">
+          Leta <span className="text-[#3FC7B0] font-normal">Kasahun</span>
+        </span>
       )}
     </Link>
   );
