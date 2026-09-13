@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Resume & Curriculum Vitae | Leta Kasahun",
-  description: "Senior Full-Stack & Distributed Systems Engineer Resume of Leta Kasahun with interactive PDF viewer, zoom controls, and download options.",
+  description: "Curriculum Vitae and professional experience of Leta Kasahun, Software Engineering student and Full-Stack Developer.",
 };
 
 export default async function ResumePage() {

@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Contact | Leta Kasahun",
-  description: "Get in touch with Leta Kasahun for software engineering roles, distributed systems consulting, and technical collaboration.",
+  description: "Get in touch with Leta Kasahun for software engineering roles, full-stack development, and technical collaboration.",
 };
 
 export default async function ContactPage() {

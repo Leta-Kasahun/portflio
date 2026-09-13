@@ -6,8 +6,8 @@ import { Container } from "@/components/layout/Container";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Engineering Blogs & Insights | Leta Kasahun",
-  description: "Technical deep-dives on distributed consensus, high-throughput systems, database performance, and cloud architecture by Leta Kasahun.",
+  title: "Engineering Blog & Insights | Leta Kasahun",
+  description: "Technical notes, tutorials, and insights on software engineering, Python, JavaScript, Docker, and AI applications by Leta Kasahun.",
 };
 
 export default async function BlogPage() {

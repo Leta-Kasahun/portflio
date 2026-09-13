@@ -33,7 +33,11 @@ export function ProjectForm({ project }: ProjectFormProps) {
   const caseStudy = (project?.caseStudy as CaseStudyData | null) || null;
 
   return (
-    <form action={formAction} className="space-y-8">
+    <form
+      action={formAction}
+      encType="multipart/form-data"
+      className="space-y-8"
+    >
       {state?.error && (
         <div className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
           {state.error}

@@ -6,7 +6,7 @@ export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Skills & Technical Expertise | Leta Kasahun",
-  description: "Technical competencies, core languages, distributed systems, and cloud infrastructure.",
+  description: "Technical competencies, programming languages, backend frameworks, Docker, Kubernetes, and AI engineering.",
 };
 
 export default async function SkillsPage() {

@@ -55,9 +55,8 @@ export function HeroSection({ profile, socialLinks }: HeroSectionProps) {
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         <div className="grid grid-cols-1 items-center gap-8 sm:gap-12 lg:grid-cols-12 lg:gap-8 xl:gap-12">
           <div
-            className={`flex flex-col items-start text-left ${
-              profile.imageUrl ? "lg:col-span-7" : "lg:col-span-12 max-w-3xl"
-            }`}
+            className={`flex flex-col items-start text-left ${profile.imageUrl ? "lg:col-span-7" : "lg:col-span-12 max-w-3xl"
+              }`}
           >
             <span className="text-xl font-extrabold tracking-tight text-white xs:text-3xl sm:text-4xl lg:text-5xl">
               Hi, I&apos;m
