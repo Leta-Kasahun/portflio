@@ -1,19 +1,11 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Profile, SocialLink } from "@/generated/prisma/client";
-import { ThreeCanvas } from "@/components/ui/ThreeCanvas";
+import { HeroAvatar } from "./HeroAvatar";
 
 type HeroSectionProps = {
   profile: Profile;
   socialLinks: SocialLink[];
 };
-
-const DEFAULT_SOCIAL_LINKS: { id: string; platform: string; url: string }[] = [
-  { id: "github", platform: "GitHub", url: "https://github.com/Leta-Kasah" },
-  { id: "linkedin", platform: "LinkedIn", url: "https://linkedin.com/in/letakasahun" },
-  { id: "twitter", platform: "Twitter / X", url: "https://x.com/letakasahun" },
-  { id: "email", platform: "Email", url: "mailto:letakasahun2@gmail.com" },
-];
 
 function getSocialIcon(platform: string) {
   const p = platform.toLowerCase();
@@ -56,21 +48,22 @@ function getSocialIcon(platform: string) {
 }
 
 export function HeroSection({ profile, socialLinks }: HeroSectionProps) {
-  const linksToDisplay =
-    socialLinks && socialLinks.length > 0 ? socialLinks : DEFAULT_SOCIAL_LINKS;
+  const linksToDisplay = socialLinks || [];
 
   return (
-    <section className="relative flex min-h-[92vh] items-center overflow-hidden border-b border-[#22282B] bg-[#0E1113] px-3 xs:px-4 sm:px-6 lg:px-8 pt-20 pb-12 sm:pt-24 sm:pb-18 lg:py-24">
-      <ThreeCanvas />
-
+    <section className="relative flex min-h-[92vh] items-center overflow-hidden bg-[#0E1113] px-3 xs:px-4 sm:px-6 lg:px-8 pt-20 pb-12 sm:pt-24 sm:pb-18 lg:py-24">
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         <div className="grid grid-cols-1 items-center gap-8 sm:gap-12 lg:grid-cols-12 lg:gap-8 xl:gap-12">
-          <div className="flex flex-col items-start text-left lg:col-span-7">
+          <div
+            className={`flex flex-col items-start text-left ${
+              profile.imageUrl ? "lg:col-span-7" : "lg:col-span-12 max-w-3xl"
+            }`}
+          >
             <span className="text-xl font-extrabold tracking-tight text-white xs:text-3xl sm:text-4xl lg:text-5xl">
               Hi, I&apos;m
             </span>
 
-            <h1 className="mt-1 text-3xl font-black tracking-tight text-[#3FC7B0] xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl">
+            <h1 className="mt-1 font-serif text-4xl font-normal tracking-tight text-[#3FC7B0] xs:text-6xl sm:text-7xl md:text-8xl lg:text-9xl">
               {profile.name}
             </h1>
 
@@ -105,53 +98,48 @@ export function HeroSection({ profile, socialLinks }: HeroSectionProps) {
               </Link>
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center gap-1.5 xs:gap-2 sm:mt-10 sm:gap-3 border-t border-[#22282B]/60 pt-5 sm:pt-7 w-full">
-              {linksToDisplay.map((link) => (
-                <a
-                  key={link.id}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-1.5 xs:gap-2 rounded-lg border border-[#22282B] bg-[#171B1D]/40 px-2.5 py-1.5 sm:px-3.5 sm:py-2 font-mono text-[11px] xs:text-xs sm:text-[13px] font-light tracking-wider text-[#E7EAEA] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#3FC7B0]/60 hover:bg-[#3FC7B0]/10 hover:text-[#3FC7B0] hover:shadow-[0_0_15px_rgba(63,199,176,0.18)] active:translate-y-0 shrink-0"
-                >
-                  <span className="text-[#8A9295] transition-colors duration-300 group-hover:text-[#3FC7B0]">
-                    {getSocialIcon(link.platform)}
-                  </span>
-                  <span>{link.platform}</span>
-                  <svg
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    className="h-3 w-3 text-[#8A9295] transition-all duration-300 group-hover:text-[#3FC7B0] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            {linksToDisplay.length > 0 && (
+              <div className="mt-6 flex flex-wrap items-center gap-1.5 xs:gap-2 sm:mt-10 sm:gap-3 border-t border-[#22282B]/60 pt-5 sm:pt-7 w-full">
+                {linksToDisplay.map((link) => (
+                  <a
+                    key={link.id}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-1.5 xs:gap-2 rounded-lg border border-[#22282B] bg-[#171B1D]/40 px-2.5 py-1.5 sm:px-3.5 sm:py-2 font-mono text-[11px] xs:text-xs sm:text-[13px] font-light tracking-wider text-[#E7EAEA] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#3FC7B0]/60 hover:bg-[#3FC7B0]/10 hover:text-[#3FC7B0] hover:shadow-[0_0_15px_rgba(63,199,176,0.18)] active:translate-y-0 shrink-0"
                   >
-                    <path
-                      d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </a>
-              ))}
-            </div>
+                    <span className="text-[#8A9295] transition-colors duration-300 group-hover:text-[#3FC7B0]">
+                      {getSocialIcon(link.platform)}
+                    </span>
+                    <span>{link.platform}</span>
+                    <svg
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      className="h-3 w-3 text-[#8A9295] transition-all duration-300 group-hover:text-[#3FC7B0] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    >
+                      <path
+                        d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
 
-          <div className="flex items-center justify-center lg:col-span-5 lg:justify-end">
-            <div className="relative w-full max-w-[220px] xs:max-w-[270px] sm:max-w-[320px] lg:max-w-[360px] xl:max-w-[380px]">
-              <div className="relative aspect-[5/6] w-full p-2 sm:p-2.5 rounded-tl-[36px] sm:rounded-tl-[54px] rounded-br-[36px] sm:rounded-br-[54px] rounded-tr-none rounded-bl-none border-[3px] border-[#3FC7B0] bg-[#0E1113] shadow-2xl transition-all duration-300">
-                <div className="relative h-full w-full overflow-hidden rounded-tl-[28px] sm:rounded-tl-[44px] rounded-br-[28px] sm:rounded-br-[44px] rounded-tr-none rounded-bl-none border-2 border-[#3FC7B0]/70 bg-[#171B1D]">
-                  <Image
-                    src="/images/hero.JPG"
-                    alt={profile.name}
-                    fill
-                    sizes="(max-width: 640px) 260px, (max-width: 1024px) 330px, 380px"
-                    className="object-cover object-top"
-                    priority
-                  />
+          {profile.imageUrl ? (
+            <div className="flex items-center justify-center lg:col-span-5 lg:justify-end">
+              <div className="relative w-full max-w-[220px] xs:max-w-[270px] sm:max-w-[320px] lg:max-w-[360px] xl:max-w-[380px]">
+                <div className="relative aspect-[5/6] w-full p-2 sm:p-2.5 rounded-tl-[36px] sm:rounded-tl-[54px] rounded-br-[36px] sm:rounded-br-[54px] rounded-tr-none rounded-bl-none border-[3px] border-[#3FC7B0] bg-[#0E1113] shadow-2xl transition-all duration-300">
+                  <HeroAvatar src={profile.imageUrl} alt={profile.name || "Profile"} />
                 </div>
               </div>
             </div>
-          </div>
+          ) : null}
         </div>
       </div>
     </section>

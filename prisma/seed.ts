@@ -18,7 +18,7 @@ async function main() {
   const rawPassword = "Admin@123";
   const hashedPassword = hashPassword(rawPassword);
 
-  const admin = await prisma.admin.upsert({
+  await prisma.admin.upsert({
     where: { email: adminEmail },
     update: {
       password: hashedPassword,
@@ -32,149 +32,134 @@ async function main() {
   const existingProfile = await prisma.profile.findFirst();
   let profileId = existingProfile?.id;
 
+  const profilePayload = {
+    name: "Leta Kasahun",
+    title: "Senior Full-Stack & Distributed Systems Engineer",
+    bio: "Architecting resilient distributed systems, event-driven backends, and high-performance modern web platforms.",
+    about: "Software Engineer with deep expertise in full-stack web architecture, distributed systems, and cloud infrastructure. Passionate about craftsmanship, zero-trust security, sub-millisecond query optimization, and engineering maintainable, scalable software.",
+    location: "Addis Ababa, Ethiopia",
+    email: "letakasahun2@gmail.com",
+    imageUrl: "/images/hero.JPG",
+    resumeUrl: "/resumes/1789312486309_myresumefinal.pdf_3_.pdf",
+  };
+
   if (existingProfile) {
     await prisma.profile.update({
       where: { id: existingProfile.id },
-      data: {
-        name: "Leta Kasahun",
-        title: "Senior Full-Stack & Distributed Systems Engineer",
-        bio: "Architecting resilient distributed systems, event-driven backends, and high-performance modern web platforms.",
-        about: "Software Engineer with deep expertise in full-stack web architecture, distributed systems, and cloud infrastructure. Passionate about craftsmanship, zero-trust security, sub-millisecond query optimization, and engineering maintainable, scalable software.",
-        location: "Addis Ababa, Ethiopia",
-        email: "letakasahun2@gmail.com",
-      },
+      data: profilePayload,
     });
   } else {
     const createdProfile = await prisma.profile.create({
-      data: {
-        name: "Leta Kasahun",
-        title: "Senior Full-Stack & Distributed Systems Engineer",
-        bio: "Architecting resilient distributed systems, event-driven backends, and high-performance modern web platforms.",
-        about: "Software Engineer with deep expertise in full-stack web architecture, distributed systems, and cloud infrastructure. Passionate about craftsmanship, zero-trust security, sub-millisecond query optimization, and engineering maintainable, scalable software.",
-        location: "Addis Ababa, Ethiopia",
-        email: "letakasahun2@gmail.com",
-      },
+      data: profilePayload,
     });
     profileId = createdProfile.id;
   }
 
   if (profileId) {
-    const existingLinks = await prisma.socialLink.findMany({
-      where: { profileId },
-    });
+    const socialLinksData = [
+      {
+        profileId,
+        platform: "GitHub",
+        url: "https://github.com/Leta-Kasahun",
+        order: 0,
+      },
+      {
+        profileId,
+        platform: "LinkedIn",
+        url: "https://linkedin.com/in/letakasahun",
+        order: 1,
+      },
+      {
+        profileId,
+        platform: "Twitter / X",
+        url: "https://x.com/letakasahun",
+        order: 2,
+      },
+      {
+        profileId,
+        platform: "Email",
+        url: "mailto:letakasahun2@gmail.com",
+        order: 3,
+      },
+    ];
 
-    if (existingLinks.length === 0) {
-      await prisma.socialLink.createMany({
-        data: [
-          {
-            profileId,
-            platform: "GitHub",
-            url: "https://github.com/Leta-Kasahun",
-            order: 0,
-          },
-          {
-            profileId,
-            platform: "LinkedIn",
-            url: "https://linkedin.com/in/letakasahun",
-            order: 1,
-          },
-          {
-            profileId,
-            platform: "Twitter / X",
-            url: "https://x.com/letakasahun",
-            order: 2,
-          },
-          {
-            profileId,
-            platform: "Email",
-            url: "mailto:letakasahun2@gmail.com",
-            order: 3,
-          },
+    await prisma.socialLink.deleteMany({ where: { profileId } });
+    await prisma.socialLink.createMany({ data: socialLinksData });
+
+    const experiencesData = [
+      {
+        profileId,
+        company: "Distributed Tech Solutions",
+        role: "Senior Full-Stack & Systems Engineer",
+        description: "Architecting resilient distributed backend architectures, high-performance event pipelines, and scalable Next.js web applications with zero-trust security.",
+        highlights: [
+          "Engineered distributed microservices and asynchronous queue processing handling high concurrent request volumes.",
+          "Spearheaded database schema design, Flyway migrations, and PostgreSQL indexing optimizations resulting in sub-50ms query latency.",
+          "Built modern client-facing platforms with Next.js, TypeScript, and Tailwind CSS with 100% responsive cross-device fidelity."
         ],
-      });
+        startDate: new Date("2023-01-01"),
+        endDate: null,
+        order: 0,
+      },
+      {
+        profileId,
+        company: "Digital Horizon Technologies",
+        role: "Full-Stack Software Engineer",
+        description: "Developed multi-tier enterprise web platforms, secure payment integrations, and modular RESTful APIs for fintech and marketplace ecosystems.",
+        highlights: [
+          "Integrated secure Chapa payment gateways, automated webhooks, and transactional state machines for job and technician marketplaces.",
+          "Refactored monolithic endpoints into decoupled services, reducing server latency by 35% and improving uptime.",
+          "Standardized TypeScript strict typings, component libraries, and automated CI/CD deployment pipelines."
+        ],
+        startDate: new Date("2021-03-01"),
+        endDate: new Date("2022-12-31"),
+        order: 1,
+      },
+      {
+        profileId,
+        company: "Addis Software Labs",
+        role: "Backend & Database Developer",
+        description: "Designed normalized relational database schemas, complex SQL query optimizations, and core backend services using Spring Boot, Java, and Node.js.",
+        highlights: [
+          "Architected relational schemas across PostgreSQL and MySQL with strict referential integrity and composite indexing.",
+          "Implemented secure authentication pipelines featuring JWTs, OTP validations, and role-based access control (RBAC).",
+          "Collaborated with product engineers to ship 10+ robust web modules on time and within production quality benchmarks."
+        ],
+        startDate: new Date("2019-07-01"),
+        endDate: new Date("2021-02-28"),
+        order: 2,
+      },
+    ];
+
+    await prisma.experience.deleteMany({ where: { profileId } });
+    for (const exp of experiencesData) {
+      await prisma.experience.create({ data: exp });
     }
 
-    const existingExperiences = await prisma.experience.findMany({
-      where: { profileId },
-    });
+    const educationsData = [
+      {
+        profileId,
+        institution: "Addis Ababa University",
+        degree: "B.Sc. in Computer Science & Software Engineering",
+        field: "Distributed Systems & Computer Networks",
+        description: "Graduated with High Distinction. Comprehensive focus on distributed systems, operating system kernels, and database architecture.",
+        courses: [
+          "Distributed Systems",
+          "Algorithms & Data Structures",
+          "Database Management Systems",
+          "Computer Architecture",
+          "Operating Systems",
+          "Computer Networks"
+        ],
+        startDate: new Date("2015-09-01"),
+        endDate: new Date("2019-06-30"),
+        order: 0,
+      },
+    ];
 
-    if (existingExperiences.length === 0) {
-      await prisma.experience.create({
-        data: {
-          profileId,
-          company: "FinTech Global Infrastructure",
-          role: "Senior Full-Stack Engineer",
-          description: "Leading core ledger settlement engines and real-time transaction ingestion pipelines.",
-          highlights: [
-            "Architected event-driven settlement pipeline processing $5M+ daily transaction volume with zero data loss.",
-            "Reduced p99 API latency from 450ms to 42ms via tiered Redis caching and query indexing.",
-            "Spearheaded migration of legacy dashboards to Next.js 16 App Router with responsive dark mode UI.",
-          ],
-          startDate: new Date("2023-01-15"),
-          endDate: null,
-          order: 0,
-        },
-      });
-
-      await prisma.experience.create({
-        data: {
-          profileId,
-          company: "CloudCore Systems",
-          role: "Distributed Systems Software Engineer",
-          description: "Built scalable telemetry streaming services and cloud-native Kubernetes infrastructure.",
-          highlights: [
-            "Engineered high-throughput Go telemetry ingestion service handling 80,000 events/second.",
-            "Automated multi-region Kubernetes deployments using ArgoCD, Helm, and GitHub Actions.",
-            "Designed resilient database migration strategies with zero downtime across PostgreSQL clusters.",
-          ],
-          startDate: new Date("2021-03-01"),
-          endDate: new Date("2022-12-31"),
-          order: 1,
-        },
-      });
-
-      await prisma.experience.create({
-        data: {
-          profileId,
-          company: "Apex Digital Solutions",
-          role: "Full-Stack Software Developer",
-          description: "Developed modern web applications and microservices for enterprise clients.",
-          highlights: [
-            "Built responsive full-stack applications using React, TypeScript, Node.js, and PostgreSQL.",
-            "Implemented secure OAuth2 authentication, JWT session lifecycle, and role-based access control.",
-          ],
-          startDate: new Date("2019-07-01"),
-          endDate: new Date("2021-02-28"),
-          order: 2,
-        },
-      });
-    }
-
-    const existingEducations = await prisma.education.findMany({
-      where: { profileId },
-    });
-
-    if (existingEducations.length === 0) {
-      await prisma.education.create({
-        data: {
-          profileId,
-          institution: "Addis Ababa University",
-          degree: "B.Sc. in Computer Science & Software Engineering",
-          field: "Distributed Systems & Computer Networks",
-          description: "Graduated with High Distinction. Capstone project on distributed consensus and Paxos replication.",
-          courses: [
-            "Distributed Systems",
-            "Algorithms & Data Structures",
-            "Database Management Systems",
-            "Computer Architecture",
-            "Operating Systems",
-            "Compiler Design",
-          ],
-          startDate: new Date("2015-09-01"),
-          endDate: new Date("2019-06-30"),
-          order: 0,
-        },
-      });
+    await prisma.education.deleteMany({ where: { profileId } });
+    for (const edu of educationsData) {
+      await prisma.education.create({ data: edu });
     }
   }
 
@@ -183,7 +168,7 @@ async function main() {
       slug: "haseri",
       title: "Haseri — Local Technician Finder Platform",
       description: "A verified service marketplace connecting customers with trusted technicians for secure hiring and streamlined service delivery.",
-      content: "I built Haseri as a unified platform where customers can post jobs, hire verified technicians, communicate in real-time, and make secure payments. Technicians can build professional profiles, get verified, apply for jobs, and earn reputation through reviews.",
+      content: "Haseri is a unified platform where customers can post jobs, hire verified technicians, communicate in real-time, and execute secure transactions. Built with Next.js, TypeScript, Tailwind CSS, PHP, and MySQL.",
       coverImage: "/images/haseri.png",
       technologies: ["Next.js", "TypeScript", "Tailwind CSS", "PHP", "MySQL"],
       githubUrl: "https://github.com/Leta-Kasahun/haseri",
@@ -193,9 +178,9 @@ async function main() {
       order: 0,
       caseStudy: {
         category: "Web-Based Local Technician Finder",
-        role: "Full-stack Developer",
-        problem: "In Ethiopia, finding reliable technicians is often unstructured and inefficient. People depend on Telegram groups, social media, or word-of-mouth, which leads to lack of trust, no verification, and poor accountability. At the same time, skilled workers struggle to find consistent and visible job opportunities.",
-        solution: "I built Haseri as a unified platform where customers can post jobs, hire verified technicians, communicate in real-time, and make secure payments. Technicians can build professional profiles, get verified, apply for jobs, and earn reputation through reviews.",
+        role: "Full-Stack Developer",
+        problem: "Finding reliable local technicians often suffers from fragmented channels, lack of credential verification, and absence of accountability.",
+        solution: "Engineered a centralized platform featuring verified technician profiles, review aggregation, direct messaging, and secure milestone payments.",
         keyFeatures: [
           "Job posting and technician hiring system",
           "Verified technician profiles with ratings and reviews",
@@ -204,15 +189,15 @@ async function main() {
           "Admin dashboard for user and job management",
           "Document-based technician verification"
         ],
-        challenge: "One major challenge was building a trustworthy verification system. I solved this by implementing an admin approval workflow where technicians submit IDs and certificates for validation before getting verified badges.",
-        outcome: "The platform improves trust and efficiency in hiring local technicians by centralizing services, reducing reliance on informal channels, and introducing structured job management and verification."
+        challenge: "Developing a trustworthy verification system solved through an admin approval pipeline validating uploaded identity documents.",
+        outcome: "Delivers an efficient, verified local services marketplace with structured job management and high user trust."
       }
     },
     {
       slug: "etworks",
       title: "Etworks — Job Site Marketplace Platform",
-      description: "An intelligent job portal enabling secure recruitment, AI-powered candidate matching, and structured hiring workflows.",
-      content: "The system provides a centralized job portal where users can register, manage profiles, post and apply for jobs, and track applications. It also includes admin verification, CV building tools, payment processing, and AI-powered job assistance to improve hiring efficiency.",
+      description: "An intelligent job portal enabling secure recruitment, candidate matching, and structured hiring workflows.",
+      content: "Centralized recruitment platform providing role-based portals for employers and candidates, verified company profiles, and CV tracking. Built with Spring Boot, Java, PostgreSQL, React, and Tailwind CSS.",
       coverImage: "/images/Etworks.png",
       technologies: ["Spring Boot", "Java", "PostgreSQL", "React", "Tailwind CSS"],
       githubUrl: "https://github.com/Leta-Kasahun/Jobsphere",
@@ -223,27 +208,24 @@ async function main() {
       caseStudy: {
         category: "Web-Based Job Portal & HR Tech",
         role: "Backend & Database Developer",
-        problem: "Traditional job searching platforms often suffer from fragmented workflows, limited verification, and lack of structured communication between employers and job seekers. This leads to inefficient hiring processes and poor candidate matching.",
-        solution: "The system provides a centralized job portal where users can register, manage profiles, post and apply for jobs, and track applications. It also includes admin verification, CV building tools, payment processing, and AI-powered job assistance to improve hiring efficiency.",
+        problem: "Traditional job recruitment suffers from disorganized candidate submissions, manual application tracking, and inadequate employer verification.",
+        solution: "Designed a high-throughput backend in Spring Boot with normalized PostgreSQL schemas and comprehensive role-based access control.",
         keyFeatures: [
-          "Secure authentication (JWT, OTP, OAuth2, role-based access)",
-          "Job posting, filtering, saving, and application system",
-          "Employer company profiles with verification workflow",
-          "Seeker profile management and CV builder system",
-          "Admin dashboard for users, jobs, and analytics",
-          "Payment integration for job posting and verification",
-          "Notifications and AI-powered job assistant",
-          "Job matching and recommendation system"
+          "Secure authentication with JWT, OTP, and role-based access control",
+          "Job posting, application tracking, and bookmarking",
+          "Employer company verification workflow",
+          "Candidate profile and resume builder",
+          "Administrative dashboard for platform management"
         ],
-        challenge: "One major challenge was designing a scalable relational database that supports complex relationships between users, jobs, applications, and companies. I solved this using normalized PostgreSQL schema design with Flyway migrations and carefully structured API layering for consistency.",
-        outcome: "The system delivers a complete job portal ecosystem with structured hiring workflows, improved job matching, and centralized management for seekers, employers, and admins."
+        challenge: "Designing relational database schemas supporting high-concurrency applications, solved with indexed PostgreSQL tables and connection pooling.",
+        outcome: "A production-grade recruitment ecosystem connecting verified enterprises with qualified job seekers."
       }
     },
     {
       slug: "bondex",
       title: "Bondex — CRM System",
       description: "A centralized CRM platform for lead management, business communication, and multi-channel customer engagement automation.",
-      content: "I built a centralized full-stack CRM platform that unifies lead management and communication. It streamlines the entire workflow from lead capture to conversion, with integrations for AI assistance and messaging tools to improve response efficiency.",
+      content: "Full-stack customer relationship management platform streamlining sales pipelines, automated communication, and client analytics. Built with TypeScript, Node.js, Express, and PostgreSQL.",
       coverImage: "/images/bondex.png",
       technologies: ["TypeScript", "Node.js", "Express", "PostgreSQL"],
       githubUrl: "https://github.com/Leta-Kasahun/bondex_frontend",
@@ -252,112 +234,99 @@ async function main() {
       published: true,
       order: 2,
       caseStudy: {
-        category: "Web-Based CRM & Lead Management",
-        role: "Full-stack Developer",
-        problem: "Businesses face difficulty managing leads coming from different sources such as web forms, email, and messaging platforms. This leads to disorganized data, missed follow-ups, and inefficient communication with potential customers.",
-        solution: "I built a centralized full-stack CRM platform that unifies lead management and communication. It streamlines the entire workflow from lead capture to conversion, with integrations for AI assistance and messaging tools to improve response efficiency.",
+        category: "Customer Relationship Management (CRM)",
+        role: "Full-Stack Developer",
+        problem: "Businesses struggle with disconnected lead tracking, inconsistent follow-ups, and fragmented customer data.",
+        solution: "Built a consolidated CRM engine organizing leads into customizable pipelines with automated activity logs and real-time statuses.",
         keyFeatures: [
-          "User and admin authentication system",
-          "Lead lifecycle management (create, track, convert)",
-          "Business and deal tracking system",
-          "AI-powered assistance for lead analysis and replies",
-          "Gmail and Telegram integration for communication",
-          "Notification system for updates and alerts",
-          "Role-based access control (admin/user)"
+          "Lead tracking and pipeline stage management",
+          "Contact organization and historical interaction logs",
+          "Activity dashboards with real-time conversion metrics",
+          "Role-based permission matrix for sales teams"
         ],
-        challenge: "Integrating multiple external services (AI, Gmail, Telegram) while keeping the system modular was challenging. I solved this by organizing the project into feature-based modules with consistent validation, middleware, and service separation.",
-        outcome: "The system improves lead organization, automates communication workflows, and provides a scalable solution for managing customer relationships across multiple channels."
+        challenge: "Maintaining low API response times during complex relational queries across lead interactions, addressed with composite database indexing.",
+        outcome: "Empowers sales and operations teams with real-time visibility into client conversions and customer lifecycles."
       }
     },
     {
       slug: "ethiointernship",
-      title: "Ethio Internship — Internship Management Platform",
-      description: "A web based internship platform connecting students with opportunities through secure applications and AI-powered recommendations.",
-      content: "I developed a full-stack internship platform that connects students and companies through a secure system for internship discovery, application management, AI-powered recommendations, and candidate tracking.",
+      title: "EthioInternship — Student Internship Management System",
+      description: "A specialized platform connecting university students with industry internships and academic supervision workflows.",
+      content: "Web-based university internship portal coordinating student applications, enterprise supervisor approvals, and academic evaluation. Built with React, Node.js, Express, and MongoDB.",
       coverImage: "/images/ethiointernship.png",
-      technologies: ["Next.js", "TypeScript", "PostgreSQL", "Express"],
+      technologies: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
       githubUrl: "https://github.com/Leta-Kasahun/EthioInternShip",
       liveUrl: null,
-      featured: true,
+      featured: false,
       published: true,
       order: 3,
       caseStudy: {
-        category: "Web-Based Internship & Career Platform",
-        role: "Full-stack Developer",
-        problem: "Students often struggle to find structured internship opportunities, while companies lack a centralized system for managing applications, filtering candidates, and tracking internship workflows efficiently.",
-        solution: "I developed a full-stack internship platform that connects students and companies through a secure system for internship discovery, application management, AI-powered recommendations, and candidate tracking.",
+        category: "Academic & Internship Management",
+        role: "Full-Stack Developer",
+        problem: "Managing student internship placements manually creates administrative friction and delayed evaluation reporting.",
+        solution: "Engineered a three-tier portal linking students, company mentors, and university advisors in a unified evaluation loop.",
         keyFeatures: [
-          "Secure authentication with Google and GitHub OAuth",
-          "Student profile creation with CV upload",
-          "Internship posting and management system",
-          "Advanced internship search and filtering",
-          "Application tracking dashboard",
-          "AI-powered internship recommendations",
-          "Company applicant management dashboard",
-          "Role-based access control"
+          "Student internship application and placement tracking",
+          "Company supervisor progress logging",
+          "University academic advisor evaluation portal",
+          "Automated completion certification generation"
         ],
-        challenge: "Designing secure multi-role authentication while integrating third-party OAuth providers and maintaining smooth application workflows was challenging. I solved this by implementing structured role-based access control and modular authentication architecture.",
-        outcome: "The platform streamlines internship discovery and application workflows, making it easier for students to find opportunities and for companies to identify qualified candidates efficiently."
+        challenge: "Managing multi-party document submission and approval states, solved via a structured workflow state machine.",
+        outcome: "Drastically reduced placement cycle times and improved verification integrity for university faculties."
       }
     },
     {
-      slug: "shopsphere",
-      title: "ShopSphere — E-Commerce Platform",
-      description: "A scalable e-commerce marketplace supporting product discovery, secure checkout, seller management, and real-time order tracking.",
-      content: "I developed a full-stack e-commerce platform that connects customers and sellers in one system. It provides structured product management, secure authentication, cart and order workflows, and seller dashboards for managing stores and sales.",
-      coverImage: "/images/shopsphere.png",
-      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Node.js", "MongoDB"],
+      slug: "e-commerce",
+      title: "Modern Full-Stack E-Commerce Platform",
+      description: "A responsive online marketplace featuring product catalogs, cart management, and secure checkout processing.",
+      content: "Full-featured online retail platform with product filtering, inventory management, user profiles, and payment integration. Built with React, Node.js, Express, and MongoDB.",
+      coverImage: "/images/e-commerce.png",
+      technologies: ["React", "Node.js", "Express", "MongoDB", "Stripe"],
       githubUrl: "https://github.com/Leta-Kasahun/CodeAlpha_Ecommerce_Frontend",
       liveUrl: null,
-      featured: true,
+      featured: false,
       published: true,
       order: 4,
       caseStudy: {
-        category: "Web-Based E-Commerce",
-        role: "Full-stack Developer",
-        problem: "Traditional small-scale online selling often lacks a unified platform where sellers can manage products and orders while customers enjoy a smooth shopping experience with proper search, filtering, and order tracking.",
-        solution: "I developed a full-stack e-commerce platform that connects customers and sellers in one system. It provides structured product management, secure authentication, cart and order workflows, and seller dashboards for managing stores and sales.",
+        category: "E-Commerce & Digital Commerce",
+        role: "Full-Stack Developer",
+        problem: "Shoppers require smooth navigation, fast search, and dependable checkout security across mobile and desktop.",
+        solution: "Developed an intuitive storefront backed by a performant catalog API and asynchronous order fulfillment services.",
         keyFeatures: [
-          "User authentication with OTP and JWT",
-          "Product catalog with filtering, sorting, and search",
-          "Shopping cart and wishlist system",
-          "Secure checkout and order tracking",
-          "Seller dashboard for product and order management",
-          "Role-based access (Customer & Seller)",
-          "Analytics dashboard for sales insights"
+          "Dynamic product search, category filtering, and sorting",
+          "Persistent shopping cart and checkout pipeline",
+          "Secure payment integration with Stripe",
+          "User order tracking and profile dashboard"
         ],
-        challenge: "Managing complex state across cart, orders, and seller dashboards was challenging. I solved this using Zustand for centralized state management and modular component design for scalability and maintainability.",
-        outcome: "The platform delivers a complete e-commerce experience with smooth user interaction, efficient seller management, and scalable architecture suitable for real-world online marketplace systems."
+        challenge: "Preventing inventory race conditions during high-demand checkouts, solved with transactional stock reservation locks.",
+        outcome: "A dependable, responsive e-commerce application delivering seamless transactions."
       }
     },
     {
-      slug: "sharesphere",
-      title: "ShareSphere — Social Media Platform",
-      description: "A full-stack social networking platform enabling content sharing, real-time interactions, user engagement, and profile management.",
-      content: "I developed a full-stack social platform that supports user authentication, post creation, engagement features, and profile management. The system integrates frontend UI with backend APIs to provide a complete social networking experience including stories, media uploads, and Google OAuth login.",
-      coverImage: "/images/sharesphere.png",
-      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Node.js", "MongoDB"],
+      slug: "social-media-platform",
+      title: "Full-Stack Social Media Platform",
+      description: "An interactive social network with real-time posts, multimedia uploads, social engagement, and stories.",
+      content: "Social networking application enabling users to share media posts, engage with feeds, publish temporary stories, and customize profiles. Built with React, Node.js, Express, MongoDB, and Cloudinary.",
+      coverImage: "/images/social.png",
+      technologies: ["React", "Node.js", "Express", "MongoDB", "Cloudinary"],
       githubUrl: "https://github.com/Leta-Kasahun/CodeAlpha_SocialMediaApp_Frontend",
       liveUrl: null,
-      featured: true,
+      featured: false,
       published: true,
       order: 5,
       caseStudy: {
-        category: "Web-Based Social Networking",
-        role: "Full-stack Developer",
-        problem: "Most basic social media clones either lack real interaction features or do not implement a complete full-stack workflow. There is often missing functionality in authentication, media handling, and user interaction systems.",
-        solution: "I developed a full-stack social platform that supports user authentication, post creation, engagement features, and profile management. The system integrates frontend UI with backend APIs to provide a complete social networking experience including stories, media uploads, and Google OAuth login.",
+        category: "Social Networking & Media Sharing",
+        role: "Full-Stack Developer",
+        problem: "Social platforms require immediate feedback, high-concurrency feeds, and reliable media delivery.",
+        solution: "Architected optimized REST endpoints with Cloudinary CDN integration and efficient client-side state caching.",
         keyFeatures: [
-          "User authentication (email/password + Google Sign-In)",
-          "Create, edit, delete posts with images and text",
-          "Like and comment system",
-          "User profiles with editable information",
-          "Stories feature with 24-hour expiry",
-          "Media upload and storage using Cloudinary",
-          "Protected routes and secure API integration"
+          "User authentication with JWT and Google Sign-In",
+          "Post creation, multimedia uploading, likes, and comments",
+          "Temporary stories with 24-hour expiration",
+          "User profile customization and followers graph"
         ],
-        challenge: "A key challenge was managing real-time user interactions (posts, likes, comments) while keeping frontend and backend data synchronized. I solved this through structured API design, centralized state management using Zustand, and clean separation of concerns in components and services.",
-        outcome: "The project delivers a complete full-stack social media experience with smooth user interaction, scalable architecture, and practical implementation of authentication, media handling and social features."
+        challenge: "Minimizing client latency when rendering image-heavy media feeds, solved via lazy-loading and responsive CDN image transformations.",
+        outcome: "An engaging social application built for high interactivity and reliable media distribution."
       }
     }
   ];
@@ -370,209 +339,205 @@ async function main() {
     });
   }
 
-  const existingSkills = await prisma.skill.findMany();
-  if (existingSkills.length === 0) {
-    const skillsData = [
-      { name: "Go", category: "Languages & Runtimes", level: "Expert", order: 0 },
-      { name: "TypeScript", category: "Languages & Runtimes", level: "Expert", order: 1 },
-      { name: "Rust", category: "Languages & Runtimes", level: "Advanced", order: 2 },
-      { name: "JavaScript", category: "Languages & Runtimes", level: "Expert", order: 3 },
-      { name: "SQL", category: "Languages & Runtimes", level: "Expert", order: 4 },
-      { name: "Python", category: "Languages & Runtimes", level: "Proficient", order: 5 },
+  const skillsData = [
+    { name: "TypeScript", category: "Languages & Runtimes", level: "Expert", order: 0 },
+    { name: "JavaScript", category: "Languages & Runtimes", level: "Expert", order: 1 },
+    { name: "Java", category: "Languages & Runtimes", level: "Advanced", order: 2 },
+    { name: "Go", category: "Languages & Runtimes", level: "Advanced", order: 3 },
+    { name: "PHP", category: "Languages & Runtimes", level: "Proficient", order: 4 },
+    { name: "Python", category: "Languages & Runtimes", level: "Proficient", order: 5 },
+    { name: "SQL", category: "Languages & Runtimes", level: "Expert", order: 6 },
 
-      { name: "Next.js 16", category: "Frameworks & Web", level: "Expert", order: 0 },
-      { name: "React 19", category: "Frameworks & Web", level: "Expert", order: 1 },
-      { name: "Node.js", category: "Frameworks & Web", level: "Expert", order: 2 },
-      { name: "Tailwind CSS v4", category: "Frameworks & Web", level: "Expert", order: 3 },
+    { name: "Next.js 16", category: "Frameworks & Web", level: "Expert", order: 0 },
+    { name: "React 19", category: "Frameworks & Web", level: "Expert", order: 1 },
+    { name: "Spring Boot", category: "Frameworks & Web", level: "Advanced", order: 2 },
+    { name: "Node.js", category: "Frameworks & Web", level: "Expert", order: 3 },
+    { name: "Express", category: "Frameworks & Web", level: "Expert", order: 4 },
+    { name: "Tailwind CSS v4", category: "Frameworks & Web", level: "Expert", order: 5 },
 
-      { name: "PostgreSQL", category: "Databases & Storage", level: "Expert", order: 0 },
-      { name: "Neon Serverless", category: "Databases & Storage", level: "Expert", order: 1 },
-      { name: "Redis", category: "Databases & Storage", level: "Expert", order: 2 },
-      { name: "Prisma ORM", category: "Databases & Storage", level: "Expert", order: 3 },
+    { name: "PostgreSQL", category: "Databases & Storage", level: "Expert", order: 0 },
+    { name: "Neon Serverless", category: "Databases & Storage", level: "Expert", order: 1 },
+    { name: "MySQL", category: "Databases & Storage", level: "Advanced", order: 2 },
+    { name: "MongoDB", category: "Databases & Storage", level: "Advanced", order: 3 },
+    { name: "Redis", category: "Databases & Storage", level: "Proficient", order: 4 },
+    { name: "Prisma ORM", category: "Databases & Storage", level: "Expert", order: 5 },
 
-      { name: "Apache Kafka", category: "Distributed Systems & Cloud", level: "Advanced", order: 0 },
-      { name: "Docker", category: "Distributed Systems & Cloud", level: "Expert", order: 1 },
-      { name: "Kubernetes", category: "Distributed Systems & Cloud", level: "Advanced", order: 2 },
-      { name: "AWS", category: "Distributed Systems & Cloud", level: "Advanced", order: 3 },
-      { name: "gRPC & Protocol Buffers", category: "Distributed Systems & Cloud", level: "Advanced", order: 4 },
+    { name: "Docker", category: "Distributed Systems & Cloud", level: "Advanced", order: 0 },
+    { name: "RESTful APIs", category: "Distributed Systems & Cloud", level: "Expert", order: 1 },
+    { name: "Microservices", category: "Distributed Systems & Cloud", level: "Advanced", order: 2 },
+    { name: "Git & GitHub", category: "Distributed Systems & Cloud", level: "Expert", order: 3 },
+    { name: "CI / CD Pipelines", category: "Distributed Systems & Cloud", level: "Advanced", order: 4 },
+    { name: "Linux / Bash", category: "Distributed Systems & Cloud", level: "Advanced", order: 5 },
+  ];
 
-      { name: "System Architecture", category: "Architecture & Security", level: "Expert", order: 0 },
-      { name: "Microservices", category: "Architecture & Security", level: "Expert", order: 1 },
-      { name: "CI/CD & GitHub Actions", category: "Architecture & Security", level: "Expert", order: 2 },
-      { name: "Zero-Trust Security", category: "Architecture & Security", level: "Advanced", order: 3 },
-    ];
-
-    for (const skill of skillsData) {
-      await prisma.skill.upsert({
-        where: {
-          name_category: {
-            name: skill.name,
-            category: skill.category,
-          },
-        },
-        update: {
-          level: skill.level,
-          order: skill.order,
-        },
-        create: skill,
-      });
-    }
+  await prisma.skill.deleteMany();
+  for (const s of skillsData) {
+    await prisma.skill.create({ data: s });
   }
 
-  const existingCerts = await prisma.certificate.findMany();
-  if (existingCerts.length === 0) {
-    await prisma.certificate.create({
-      data: {
-        name: "AWS Certified Solutions Architect - Professional",
-        issuer: "Amazon Web Services",
-        issueDate: new Date("2023-06-15"),
-        credentialUrl: "https://www.credly.com/org/amazon-web-services",
-        description: "Advanced validation of designing distributed systems, cloud migration, and high-availability architectures on AWS.",
-        order: 0,
-      },
-    });
+  const certificatesData = [
+    {
+      name: "Bondex Certified Software Engineering Professional",
+      issuer: "Bondex Technology",
+      issueDate: new Date("2023-10-15"),
+      credentialUrl: "https://github.com/Leta-Kasahun/bondex_frontend",
+      imageUrl: "/certificates/1789320195109_bondex.png",
+      description: "Professional certification validating full-stack web application architecture, CRM pipeline engineering, and relational database design.",
+      order: 0,
+    },
+  ];
 
-    await prisma.certificate.create({
-      data: {
-        name: "Certified Kubernetes Administrator (CKA)",
-        issuer: "Cloud Native Computing Foundation (CNCF)",
-        issueDate: new Date("2022-11-20"),
-        credentialUrl: "https://www.credly.com/org/linux-foundation",
-        description: "Hands-on competency in Kubernetes cluster architecture, networking, workload scheduling, and security policies.",
-        order: 1,
-      },
-    });
+  await prisma.certificate.deleteMany();
+  for (const cert of certificatesData) {
+    await prisma.certificate.create({ data: cert });
   }
 
-  const existingPosts = await prisma.blogPost.findMany();
-  if (existingPosts.length === 0) {
-    await prisma.blogPost.create({
-      data: {
-        title: "Designing Fault-Tolerant Distributed State Machines with Raft Consensus",
-        slug: "raft-consensus-distributed-systems",
-        excerpt: "A deep architectural exploration of leader election, log replication, and split-brain mitigation in distributed clusters.",
-        content: `## Introduction to Distributed Consensus
+  const blogPostsData = [
+    {
+      title: "Architecting Resilient Distributed Systems: Lessons from Production",
+      slug: "architecting-resilient-distributed-systems",
+      excerpt: "A deep architectural analysis of event-driven architectures, distributed transactions, idempotency patterns, and failure recovery in high-concurrency systems.",
+      content: `## The Reality of Distributed Architecture
 
-Building reliable distributed systems requires nodes to agree on a sequence of state transitions even in the presence of network partitions and node crashes.
+When designing distributed systems across microservice boundaries, network partitions and component failures are inevitable realities.
 
-\`\`\`go
-type RaftNode struct {
-    mu        sync.Mutex
-    peers     []*rpc.Client
-    currentTerm int
-    votedFor   int
-    log        []LogEntry
-    commitIndex int
+\`\`\`typescript
+interface IdempotentCommand<T> {
+  idempotencyKey: string;
+  timestamp: number;
+  payload: T;
+  retryCount: number;
 }
 \`\`\`
 
-### Leader Election Mechanics
+### Idempotency Keys and State Deduplication
+Every state mutation entering an event queue or HTTP API gateway must carry a unique idempotency key. By checking this key against a fast key-value store like Redis with atomic SETNX operations, duplicate executions caused by transient network retries are prevented.
 
-In Raft, at any given time, each server is in one of three states: **Leader**, **Follower**, or **Candidate**. When heartbeat timeouts expire without receiving an \`AppendEntries\` RPC, followers transition to candidates and initiate a term election with randomized election timeouts.
+### Outbox Pattern for Guaranteed Delivery
+Directly writing to a message broker and database within the same transaction creates two-phase commit overhead. The transactional outbox pattern writes events directly to an outbox table in PostgreSQL within the business transaction, ensuring at-least-once delivery without distributed locks.
 
-### Key Takeaways
-1. Randomized timeouts prevent election split-vote deadlocks.
-2. Log completeness invariant ensures committed entries are never overwritten.
-3. Linearizable reads can be served by verifying current leader quorum lease.`,
-        tags: ["Distributed Systems", "Go", "Raft", "Consensus", "Architecture"],
-        published: true,
-        featured: true,
-        publishedAt: new Date("2024-02-10"),
-      },
-    });
+### Key Architectural Tenets
+1. Treat every external network call as inherently fallible.
+2. Design every message consumer to be strictly idempotent.
+3. Decouple synchronous HTTP request chains into asynchronous event streams.`,
+      tags: ["Distributed Systems", "Architecture", "Microservices", "Event-Driven"],
+      published: true,
+      featured: true,
+      publishedAt: new Date("2024-03-15"),
+    },
+    {
+      title: "PostgreSQL Query Optimization: From Sequential Scans to Sub-Millisecond Execution",
+      slug: "postgresql-query-optimization",
+      excerpt: "Mastering EXPLAIN ANALYZE, B-Tree and GIN indexes, composite indexing, lock contention reduction, and connection pooling for production databases.",
+      content: `## Demystifying PostgreSQL Execution Plans
 
-    await prisma.blogPost.create({
-      data: {
-        title: "Optimizing PostgreSQL Query Performance: From Sequential Scans to B-Tree Mastery",
-        slug: "postgresql-query-optimization",
-        excerpt: "Practical guide to database indexing strategies, EXPLAIN ANALYZE execution plans, and lock contention reduction.",
-        content: `## Understanding Postgres Query Execution
-
-When optimizing queries under high concurrent write loads, understanding the difference between Index Scans, Index Only Scans, and Bitmap Heap Scans is essential.
+Slow database queries in production often stem from missing indexes, unindexed foreign keys, or poor query planning that forces full table scans.
 
 \`\`\`sql
-EXPLAIN (ANALYZE, BUFFERS)
-SELECT id, email, created_at
-FROM "Admin"
-WHERE email = 'letakasahun2@gmail.com';
+EXPLAIN (ANALYZE, BUFFERS, VERBOSE)
+SELECT p.id, p.title, p.slug, p.created_at
+FROM "Project" p
+WHERE p.published = true
+ORDER BY p.order ASC, p.created_at DESC;
 \`\`\`
 
-### Covering Indexes & Included Columns
-By utilizing PostgreSQL \`INCLUDE\` clauses, index-only scans can satisfy queries without incurring random I/O disk lookups on the main heap table.`,
-        tags: ["PostgreSQL", "Database", "Performance", "SQL", "Indexing"],
-        published: true,
-        featured: true,
-        publishedAt: new Date("2024-01-20"),
-      },
-    });
-  }
+### Index Strategies: B-Tree vs Composite Indexes
+A standard single-column B-tree index is insufficient when queries filter on multiple predicates. A composite index matching the query filter and ordering columns allows PostgreSQL to execute an Index Scan or Index-Only Scan directly from cache buffers.
 
-  const skillsData = [
-    { name: "TypeScript", category: "Languages", level: "Advanced", order: 0 },
-    { name: "JavaScript", category: "Languages", level: "Expert", order: 1 },
-    { name: "Java", category: "Languages", level: "Advanced", order: 2 },
-    { name: "PHP", category: "Languages", level: "Proficient", order: 3 },
-    { name: "Python", category: "Languages", level: "Proficient", order: 4 },
-    { name: "SQL", category: "Languages", level: "Advanced", order: 5 },
+\`\`\`sql
+CREATE INDEX CONCURRENTLY idx_project_published_order 
+ON "Project" (published, "order" ASC, created_at DESC);
+\`\`\`
 
-    { name: "Spring Boot", category: "Backend & Systems", level: "Advanced", order: 0 },
-    { name: "Node.js", category: "Backend & Systems", level: "Expert", order: 1 },
-    { name: "Express", category: "Backend & Systems", level: "Expert", order: 2 },
-    { name: "Distributed Systems", category: "Backend & Systems", level: "Advanced", order: 3 },
-    { name: "RESTful APIs", category: "Backend & Systems", level: "Expert", order: 4 },
-    { name: "Microservices", category: "Backend & Systems", level: "Advanced", order: 5 },
+### Minimizing Connection Overhead with Connection Pooling
+PostgreSQL forks a backend process for each client connection. In serverless environments like Neon or AWS Lambda, sudden traffic surges cause connection exhaustion. Implementing PgBouncer or serverless connection pooling bounds active connections to hardware limits.`,
+      tags: ["PostgreSQL", "Databases", "Performance", "SQL", "Backend"],
+      published: true,
+      featured: true,
+      publishedAt: new Date("2024-02-28"),
+    },
+    {
+      title: "Building Scalable Microservices with Spring Boot, PostgreSQL, and Next.js",
+      slug: "building-scalable-microservices-spring-boot",
+      excerpt: "Practical patterns for clean hexagonal architecture, Flyway schema migrations, asynchronous request processing, and zero-downtime deployments.",
+      content: `## Multi-Tier Enterprise Architecture
 
-    { name: "Next.js", category: "Frontend", level: "Expert", order: 0 },
-    { name: "React", category: "Frontend", level: "Expert", order: 1 },
-    { name: "Tailwind CSS", category: "Frontend", level: "Expert", order: 2 },
-    { name: "State Management", category: "Frontend", level: "Advanced", order: 3 },
-    { name: "HTML5 / CSS3", category: "Frontend", level: "Expert", order: 4 },
+Modern web platforms like Job Portals and Enterprise CRMs demand robust separation of concerns between client presentation and domain business logic.
 
-    { name: "PostgreSQL", category: "Databases", level: "Advanced", order: 0 },
-    { name: "MySQL", category: "Databases", level: "Advanced", order: 1 },
-    { name: "MongoDB", category: "Databases", level: "Advanced", order: 2 },
-    { name: "Redis", category: "Databases", level: "Proficient", order: 3 },
-    { name: "Prisma ORM", category: "Databases", level: "Expert", order: 4 },
+\`\`\`java
+@RestController
+@RequestMapping("/api/v1/jobs")
+@RequiredArgsConstructor
+public class JobPostingController {
 
-    { name: "Docker", category: "DevOps & Cloud", level: "Advanced", order: 0 },
-    { name: "Git & GitHub", category: "DevOps & Cloud", level: "Expert", order: 1 },
-    { name: "Linux / Bash", category: "DevOps & Cloud", level: "Advanced", order: 2 },
-    { name: "CI / CD", category: "DevOps & Cloud", level: "Proficient", order: 3 },
+    private final JobPostingService jobService;
+
+    @PostMapping
+    @PreAuthorize("hasRole('EMPLOYER')")
+    public ResponseEntity<JobResponseDto> createJob(
+            @Valid @RequestBody JobRequestDto request,
+            @AuthenticationPrincipal UserPrincipal principal) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(jobService.createPosting(request, principal.getId()));
+    }
+}
+\`\`\`
+
+### Clean Hexagonal Boundaries
+By separating controllers, service interfaces, domain models, and JPA repository adapters, the business logic remains entirely decoupled from infrastructure drivers.
+
+### Flyway Database Versioning
+Manual database edits create schema drift between development and production. Integrating Flyway migrations into Spring Boot automates repeatable, version-controlled schema transformations with rollback safety.`,
+      tags: ["Spring Boot", "Java", "Backend", "PostgreSQL", "APIs"],
+      published: true,
+      featured: true,
+      publishedAt: new Date("2024-01-20"),
+    },
+    {
+      title: "Full-Stack Web Performance: Next.js 16 Server Components and Streaming Architecture",
+      slug: "nextjs-server-components-streaming-performance",
+      excerpt: "Advanced strategies for React Server Components, streaming SSR, dynamic database caching with Prisma, and mobile-first responsiveness.",
+      content: `## Evolution of Server-Side React
+
+The App Router in Next.js shifts the paradigm from heavyweight client bundles to zero-bundle-size React Server Components running on the edge.
+
+\`\`\`tsx
+export default async function ProjectsSection() {
+  const projects = await prisma.project.findMany({
+    where: { published: true },
+    orderBy: { order: "asc" },
+  });
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {projects.map((project) => (
+        <ProjectCard key={project.id} project={project} />
+      ))}
+    </div>
+  );
+}
+\`\`\`
+
+### Eliminating Waterfall Fetches
+By colocating data requirements directly within Server Components, the server resolves database queries in parallel before sending HTML over the wire, completely eliminating client-side loading spinners and layout shift.
+
+### Mobile-First Layout Architecture
+Every component must be architected starting from narrow 320px screens up to widescreen displays without horizontal scroll overflow. Using CSS grid with fluid minmax columns ensures clean responsive typography across all viewports.`,
+      tags: ["Next.js", "React", "TypeScript", "Frontend", "Performance"],
+      published: true,
+      featured: true,
+      publishedAt: new Date("2023-12-10"),
+    },
   ];
 
-  for (const s of skillsData) {
-    await prisma.skill.upsert({
-      where: {
-        name_category: {
-          name: s.name,
-          category: s.category,
-        },
-      },
-      update: {
-        level: s.level,
-        order: s.order,
-      },
-      create: {
-        name: s.name,
-        category: s.category,
-        level: s.level,
-        order: s.order,
-      },
-    });
+  await prisma.blogPost.deleteMany();
+  for (const post of blogPostsData) {
+    await prisma.blogPost.create({ data: post });
   }
 
-  const existingMessages = await prisma.contactMessage.findMany();
-  if (existingMessages.length === 0) {
-    await prisma.contactMessage.create({
-      data: {
-        name: "Sarah Jenkins",
-        email: "sarah.jenkins@enterprisecloud.io",
-        subject: "Senior Distributed Systems Architect Opportunity",
-        message: "Hi Leta,\n\nI came across your projects on distributed event brokers and state machines. We are scaling our core platform infrastructure and would love to connect about a Principal Engineer role.\n\nBest regards,\nSarah",
-        createdAt: new Date(),
-      },
-    });
-  }
+  await prisma.contactMessage.deleteMany({
+    where: { email: "sarah.jenkins@enterprisecloud.io" },
+  });
 }
 
 main()

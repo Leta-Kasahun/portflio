@@ -11,6 +11,8 @@
   --font-sans: var(--font-plex-sans), sans-serif;
   --font-mono: var(--font-plex-mono), monospace;
   --font-heading: var(--font-plex-sans), sans-serif;
+  --font-editorial: var(--font-instrument-serif), Georgia, serif;
+  --font-serif: var(--font-instrument-serif), Georgia, serif;
 
   --color-graphite: #0E1113;
   --color-graphite-soft: #171B1D;
@@ -93,11 +95,13 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground font-sans;
     background-color: #0E1113;
     color: #E7EAEA;
   }
+
   html {
     @apply font-sans;
   }

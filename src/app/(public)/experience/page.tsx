@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { getAllExperiences } from "@/features/experience/queries";
 import { Container } from "@/components/layout/Container";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Professional Experience | Leta Kasahun",
@@ -45,7 +45,7 @@ export default async function ExperiencePage() {
     <div className="pt-24 pb-20 sm:pt-28 sm:pb-24">
       <Container>
         <div className="flex flex-col items-start text-left">
-          <h1 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#3FC7B0]">
+          <h1 className="font-serif text-3xl xs:text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-[#3FC7B0]">
             Professional Experience
           </h1>
         </div>

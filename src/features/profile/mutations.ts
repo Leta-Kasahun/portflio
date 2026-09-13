@@ -60,6 +60,18 @@ export async function updateProfileAction(
       ? await prisma.profile.findUnique({ where: { id: profileId } })
       : await prisma.profile.findFirst({ orderBy: { updatedAt: "desc" } });
 
+    const finalImageUrl =
+      uploadedImageUrl ||
+      (typeof data.imageUrl === "string" && data.imageUrl.trim() !== ""
+        ? data.imageUrl.trim()
+        : targetProfile?.imageUrl || null);
+
+    const finalResumeUrl =
+      uploadedResumeUrl ||
+      (typeof data.resumeUrl === "string" && data.resumeUrl.trim() !== ""
+        ? data.resumeUrl.trim()
+        : targetProfile?.resumeUrl || null);
+
     if (targetProfile) {
       await prisma.profile.update({
         where: { id: targetProfile.id },
@@ -70,8 +82,8 @@ export async function updateProfileAction(
           about: data.about,
           location: data.location || null,
           email: data.email || null,
-          imageUrl: data.imageUrl || null,
-          resumeUrl: data.resumeUrl || null,
+          imageUrl: finalImageUrl,
+          resumeUrl: finalResumeUrl,
         },
       });
 
@@ -87,14 +99,17 @@ export async function updateProfileAction(
           about: data.about,
           location: data.location || null,
           email: data.email || null,
-          imageUrl: data.imageUrl || null,
-          resumeUrl: data.resumeUrl || null,
+          imageUrl: finalImageUrl,
+          resumeUrl: finalResumeUrl,
         },
       });
     }
 
     revalidatePath("/", "layout");
+    revalidatePath("/", "page");
+    revalidatePath("/resume", "page");
     revalidatePath("/about", "page");
+    revalidatePath("/contact", "page");
     revalidatePath("/admin/profile", "page");
     revalidatePath("/admin", "layout");
 

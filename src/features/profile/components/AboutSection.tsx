@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Profile, Education } from "@/generated/prisma/client";
+import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 
 type AboutSectionProps = {
   profile: Profile;
@@ -21,7 +22,7 @@ export function AboutSection({ profile, educations }: AboutSectionProps) {
   return (
     <section
       id="about"
-      className="relative border-b border-[#22282B] bg-[#0E1113] px-3 xs:px-4 sm:px-6 lg:px-8 py-10 xs:py-12 sm:py-16 lg:py-20"
+      className="relative bg-[#0E1113] px-3 xs:px-4 sm:px-6 lg:px-8 py-10 xs:py-12 sm:py-16 lg:py-20"
     >
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         <div
@@ -29,23 +30,24 @@ export function AboutSection({ profile, educations }: AboutSectionProps) {
             hasEducations ? "lg:grid-cols-2 gap-8 lg:gap-10" : "max-w-4xl"
           } items-stretch`}
         >
-          <div className="flex flex-col items-start text-left h-full">
-            <h2 className="text-xl xs:text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#3FC7B0]">
-              About Me
-            </h2>
+          <RevealOnScroll direction="up" duration={850} className="h-full">
+            <div className="flex flex-col items-start text-left h-full">
+              <h2 className="font-serif text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-[#3FC7B0]">
+                About Me
+              </h2>
 
-            <div className="relative mt-5 sm:mt-6 w-full flex-1 flex flex-col justify-between w-full max-w-full min-w-0 overflow-hidden rounded-tl-[20px] sm:rounded-tl-[36px] rounded-br-[20px] sm:rounded-br-[36px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3.5 xs:p-6 sm:p-8 shadow-2xl transition-all duration-300 hover:border-[#3FC7B0]/50">
-              <div>
-                <div className="border-b border-[#22282B] pb-3 sm:pb-4">
-                  <h3 className="text-base xs:text-lg sm:text-xl font-bold tracking-tight text-white">
-                    {profile.title}
-                  </h3>
-                </div>
+              <div className="relative mt-5 sm:mt-6 w-full flex-1 flex flex-col justify-between w-full max-w-full min-w-0 overflow-hidden rounded-tl-[20px] sm:rounded-tl-[36px] rounded-br-[20px] sm:rounded-br-[36px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3.5 xs:p-6 sm:p-8 shadow-2xl transition-all duration-300 hover:border-[#3FC7B0]/50">
+                <div>
+                  <div className="border-b border-[#22282B] pb-3 sm:pb-4">
+                    <h3 className="text-base xs:text-lg sm:text-xl font-bold tracking-tight text-white">
+                      {profile.title}
+                    </h3>
+                  </div>
 
-                <div className="mt-4 sm:mt-5 space-y-3 font-mono text-xs sm:text-sm font-light leading-relaxed tracking-wide text-[#E7EAEA] whitespace-pre-line">
-                  <p>{profile.about || profile.bio}</p>
+                  <div className="mt-4 sm:mt-5 space-y-3 font-mono text-xs sm:text-sm font-light leading-relaxed tracking-wide text-[#E7EAEA] whitespace-pre-line">
+                    <p>{profile.about || profile.bio}</p>
+                  </div>
                 </div>
-              </div>
 
                 <div className="mt-5 sm:mt-8 border-t border-[#22282B] pt-3.5 sm:pt-5">
                   <Link
@@ -58,19 +60,21 @@ export function AboutSection({ profile, educations }: AboutSectionProps) {
                     </span>
                   </Link>
                 </div>
+              </div>
             </div>
-          </div>
+          </RevealOnScroll>
 
           {hasEducations ? (
-            <div
-              id="education"
-              className="flex flex-col items-start text-left h-full mt-8 lg:mt-0"
-            >
-              <h2 className="text-xl xs:text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#3FC7B0]">
-                Education
-              </h2>
+            <RevealOnScroll direction="up" delay={150} duration={850} className="h-full mt-8 lg:mt-0">
+              <div
+                id="education"
+                className="flex flex-col items-start text-left h-full"
+              >
+                <h2 className="font-serif text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-[#3FC7B0]">
+                  Education
+                </h2>
 
-              <div className="relative mt-5 sm:mt-6 w-full flex-1 w-full max-w-full min-w-0 overflow-hidden rounded-tl-[20px] sm:rounded-tl-[36px] rounded-br-[20px] sm:rounded-br-[36px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3.5 xs:p-6 sm:p-8 shadow-2xl transition-all duration-300 hover:border-[#3FC7B0]/50">
+                <div className="relative mt-5 sm:mt-6 w-full flex-1 w-full max-w-full min-w-0 overflow-hidden rounded-tl-[20px] sm:rounded-tl-[36px] rounded-br-[20px] sm:rounded-br-[36px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3.5 xs:p-6 sm:p-8 shadow-2xl transition-all duration-300 hover:border-[#3FC7B0]/50">
                 <div className="space-y-5 sm:space-y-6 divide-y divide-[#22282B]">
                   {educations.map((edu, index) => (
                     <div key={edu.id} className={index > 0 ? "pt-5 sm:pt-6" : ""}>
@@ -119,6 +123,7 @@ export function AboutSection({ profile, educations }: AboutSectionProps) {
                 </div>
               </div>
             </div>
+          </RevealOnScroll>
           ) : null}
         </div>
       </div>

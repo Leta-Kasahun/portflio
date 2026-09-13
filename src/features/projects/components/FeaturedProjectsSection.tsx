@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Project } from "@/generated/prisma/client";
 import { TechIcon } from "@/components/ui/TechIcons";
+import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 
 type FeaturedProjectsSectionProps = {
   projects: Project[];
@@ -13,27 +14,29 @@ export function FeaturedProjectsSection({ projects }: FeaturedProjectsSectionPro
   return (
     <section
       id="projects"
-      className="relative border-b border-[#22282B] bg-[#0E1113] px-3 xs:px-4 sm:px-6 lg:px-8 py-10 xs:py-12 sm:py-16 lg:py-20"
+      className="relative bg-[#0E1113] px-3 xs:px-4 sm:px-6 lg:px-8 py-10 xs:py-12 sm:py-16 lg:py-20"
     >
       <div className="relative z-10 mx-auto w-full max-w-7xl">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4">
-          <div className="flex flex-col items-start text-left">
-            <h2 className="text-xl xs:text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#3FC7B0]">
-              Featured Projects
-            </h2>
-          </div>
+        <RevealOnScroll direction="up" duration={850}>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4">
+            <div className="flex flex-col items-start text-left">
+              <h2 className="font-serif text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-[#3FC7B0]">
+                Featured Projects
+              </h2>
+            </div>
 
-          <Link
-            href="/projects"
-            className="group inline-flex items-center gap-1.5 font-mono text-xs sm:text-sm font-light tracking-wider text-[#E7EAEA] transition-colors hover:text-[#3FC7B0]"
-          >
-            <span>View All Works</span>
-            <span className="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
-          </Link>
-        </div>
+            <Link
+              href="/projects"
+              className="group inline-flex items-center gap-1.5 font-mono text-xs sm:text-sm font-light tracking-wider text-[#E7EAEA] transition-colors hover:text-[#3FC7B0]"
+            >
+              <span>View All Works</span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+            </Link>
+          </div>
+        </RevealOnScroll>
 
         <div className="mt-7 sm:mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
-          {projects.map((project) => {
+          {projects.map((project, projectIdx) => {
             const caseStudy =
               project.caseStudy && typeof project.caseStudy === "object"
                 ? (project.caseStudy as Record<string, unknown>)
@@ -42,21 +45,28 @@ export function FeaturedProjectsSection({ projects }: FeaturedProjectsSectionPro
               (caseStudy?.category as string) || "Full-Stack Architecture";
 
             return (
-              <div
+              <RevealOnScroll
                 key={project.id}
-                className="group relative flex flex-col justify-between w-full max-w-full min-w-0 overflow-hidden rounded-tl-[20px] sm:rounded-tl-[32px] rounded-br-[20px] sm:rounded-br-[32px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3 xs:p-5 sm:p-6 shadow-2xl transition-all duration-300 hover:border-[#3FC7B0]/60 hover:-translate-y-1"
+                direction="up"
+                delay={projectIdx * 120}
+                duration={850}
+                className="h-full"
               >
-                <div>
-                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-tl-[14px] sm:rounded-tl-[20px] rounded-br-[14px] sm:rounded-br-[20px] rounded-tr-none rounded-bl-none border border-[#22282B] bg-[#0E1113] mb-3 sm:mb-4">
-                    {project.coverImage ? (
-                      <Image
-                        src={project.coverImage}
-                        alt={project.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        unoptimized
-                      />
+                <div
+                  className="group relative flex flex-col justify-between w-full h-full max-w-full min-w-0 overflow-hidden rounded-tl-[20px] sm:rounded-tl-[32px] rounded-br-[20px] sm:rounded-br-[32px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3 xs:p-5 sm:p-6 shadow-2xl transition-all duration-300 hover:border-[#3FC7B0]/60 hover:-translate-y-1"
+                >
+                  <div>
+                    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-tl-[14px] sm:rounded-tl-[20px] rounded-br-[14px] sm:rounded-br-[20px] rounded-tr-none rounded-bl-none border border-[#22282B] bg-[#0E1113] mb-3 sm:mb-4">
+                      {project.coverImage ? (
+                        <Image
+                          src={project.coverImage}
+                          alt={project.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          loading="lazy"
+                          unoptimized
+                        />
                     ) : (
                       <div className="flex h-full w-full flex-col items-center justify-center p-3 text-center">
                         <span className="font-mono text-xs font-semibold text-[#3FC7B0]">
@@ -195,6 +205,7 @@ export function FeaturedProjectsSection({ projects }: FeaturedProjectsSectionPro
                   </a>
                 </div>
               </div>
+            </RevealOnScroll>
             );
           })}
         </div>

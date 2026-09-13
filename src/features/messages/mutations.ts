@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
+import { sendContactNotification } from "@/lib/email";
 import { contactMessageSchema } from "./validation";
 
 export type MessageActionResult = {
@@ -38,6 +39,13 @@ export async function createMessageAction(
         message: data.message,
       },
     });
+
+    await sendContactNotification({
+      name: data.name,
+      email: data.email,
+      subject: data.subject,
+      message: data.message,
+    }).catch(() => false);
 
     revalidatePath("/admin/messages");
     revalidatePath("/admin");

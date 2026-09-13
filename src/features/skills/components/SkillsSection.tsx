@@ -1,4 +1,5 @@
 import { Skill } from "@/generated/prisma/client";
+import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 
 type SkillsSectionProps = {
   skillsGrouped: Record<string, Skill[]>;
@@ -11,24 +12,32 @@ export function SkillsSection({ skillsGrouped }: SkillsSectionProps) {
   return (
     <section
       id="skills"
-      className="relative border-b border-[#22282B] bg-[#0E1113] px-3 xs:px-4 sm:px-6 lg:px-8 py-10 xs:py-12 sm:py-16 lg:py-20"
+      className="relative bg-[#0E1113] px-3 xs:px-4 sm:px-6 lg:px-8 py-10 xs:py-12 sm:py-16 lg:py-20"
     >
       <div className="relative z-10 mx-auto w-full max-w-7xl">
-        <div className="flex flex-col items-start text-left">
-          <h2 className="text-xl xs:text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#3FC7B0]">
-            Technical Skills
-          </h2>
-        </div>
+        <RevealOnScroll direction="up" duration={850}>
+          <div className="flex flex-col items-start text-left">
+            <h2 className="font-serif text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-[#3FC7B0]">
+              Technical Skills
+            </h2>
+          </div>
+        </RevealOnScroll>
 
         <div className="mt-7 sm:mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
-          {categories.map((category) => {
+          {categories.map((category, categoryIdx) => {
             const skills = skillsGrouped[category] || [];
 
             return (
-              <div
+              <RevealOnScroll
                 key={category}
-                className="group relative flex flex-col justify-between w-full max-w-full min-w-0 overflow-hidden rounded-tl-[20px] sm:rounded-tl-[32px] rounded-br-[20px] sm:rounded-br-[32px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3.5 xs:p-5 sm:p-6 shadow-2xl transition-all duration-300 hover:border-[#3FC7B0]/60 hover:-translate-y-1"
+                direction="up"
+                delay={categoryIdx * 100}
+                duration={850}
+                className="h-full"
               >
+                <div
+                  className="group relative flex flex-col justify-between w-full h-full max-w-full min-w-0 overflow-hidden rounded-tl-[20px] sm:rounded-tl-[32px] rounded-br-[20px] sm:rounded-br-[32px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3.5 xs:p-5 sm:p-6 shadow-2xl transition-all duration-300 hover:border-[#3FC7B0]/60 hover:-translate-y-1"
+                >
                 <div>
                   <div className="flex items-center justify-between border-b border-[#22282B] pb-2.5 sm:pb-3.5 mb-3 sm:mb-4">
                     <h3 className="text-sm xs:text-base sm:text-lg font-bold tracking-tight text-white group-hover:text-[#3FC7B0] transition-colors">
@@ -73,6 +82,7 @@ export function SkillsSection({ skillsGrouped }: SkillsSectionProps) {
                   <span className="text-[#3FC7B0]">Production-grade</span>
                 </div>
               </div>
+            </RevealOnScroll>
             );
           })}
         </div>

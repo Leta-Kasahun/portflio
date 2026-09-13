@@ -1,4 +1,5 @@
 import { Experience } from "@/generated/prisma/client";
+import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 
 type ExperienceSectionProps = {
   experiences: Experience[];
@@ -39,27 +40,35 @@ export function ExperienceSection({ experiences }: ExperienceSectionProps) {
   return (
     <section
       id="experience"
-      className="relative border-b border-[#22282B] bg-[#0E1113] px-3 xs:px-4 sm:px-6 lg:px-8 py-10 xs:py-12 sm:py-16 lg:py-20"
+      className="relative bg-[#0E1113] px-3 xs:px-4 sm:px-6 lg:px-8 py-10 xs:py-12 sm:py-16 lg:py-20"
     >
       <div className="relative z-10 mx-auto w-full max-w-5xl">
-        <div className="flex flex-col items-start text-left">
-          <h2 className="text-xl xs:text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#3FC7B0]">
-            Professional Experience
-          </h2>
-        </div>
+        <RevealOnScroll direction="up" duration={850}>
+          <div className="flex flex-col items-start text-left">
+            <h2 className="font-serif text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-[#3FC7B0]">
+              Professional Experience
+            </h2>
+          </div>
+        </RevealOnScroll>
 
         <div className="relative mt-8 sm:mt-12">
           <div className="absolute left-2 xs:left-3 sm:left-5 top-4 bottom-4 w-[2px] bg-gradient-to-b from-[#3FC7B0] via-[#22282B] to-[#22282B]/30" />
 
           <div className="space-y-6 sm:space-y-10">
-            {experiences.map((exp) => {
+            {experiences.map((exp, expIdx) => {
               const { dateRange, duration, isCurrent } = formatPeriod(
                 exp.startDate,
                 exp.endDate
               );
 
               return (
-                <div key={exp.id} className="relative pl-6 xs:pl-8 sm:pl-14">
+                <RevealOnScroll
+                  key={exp.id}
+                  direction="up"
+                  delay={expIdx * 120}
+                  duration={850}
+                >
+                  <div className="relative pl-6 xs:pl-8 sm:pl-14">
                   <div className="absolute left-2 xs:left-3 sm:left-5 top-6 -translate-x-1/2 flex items-center justify-center">
                     {isCurrent ? (
                       <div className="relative flex h-4 w-4 xs:h-4.5 xs:w-4.5 items-center justify-center rounded-full border-2 border-[#3FC7B0] bg-[#0E1113] shadow-[0_0_10px_rgba(63,199,176,0.5)]">
@@ -123,8 +132,9 @@ export function ExperienceSection({ experiences }: ExperienceSectionProps) {
                         ))}
                       </div>
                     ) : null}
+                    </div>
                   </div>
-                </div>
+                </RevealOnScroll>
               );
             })}
           </div>

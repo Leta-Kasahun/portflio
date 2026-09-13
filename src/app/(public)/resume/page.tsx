@@ -13,8 +13,7 @@ export const metadata: Metadata = {
 
 export default async function ResumePage() {
   const profile = await getProfile();
-  const resumeUrl =
-    profile.resumeUrl || "/resumes/1789312486309_myresumefinal.pdf_3_.pdf";
+  const resumeUrl = profile?.resumeUrl;
 
   return (
     <div className="pt-24 pb-20 sm:pt-28 sm:pb-24">
@@ -29,30 +28,32 @@ export default async function ResumePage() {
               <span>Back to Home</span>
             </Link>
 
-            <a
-              href={resumeUrl}
-              download
-              className="inline-flex items-center gap-1.5 rounded-lg border border-[#22282B] bg-[#171B1D] px-3.5 py-1.5 font-mono text-xs font-medium text-[#E7EAEA] transition-all hover:border-[#3FC7B0] hover:text-[#3FC7B0]"
-            >
-              <svg
-                className="h-3.5 w-3.5 text-[#3FC7B0]"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+            {resumeUrl && (
+              <a
+                href={resumeUrl}
+                download
+                className="inline-flex items-center gap-1.5 rounded-lg border border-[#22282B] bg-[#171B1D] px-3.5 py-1.5 font-mono text-xs font-medium text-[#E7EAEA] transition-all hover:border-[#3FC7B0] hover:text-[#3FC7B0]"
               >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
-              </svg>
-              <span>Download Direct PDF</span>
-            </a>
+                <svg
+                  className="h-3.5 w-3.5 text-[#3FC7B0]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                <span>Download Direct PDF</span>
+              </a>
+            )}
           </div>
 
           <div className="flex flex-col items-start text-left mb-6">
-            <h1 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#3FC7B0]">
+            <h1 className="font-serif text-3xl xs:text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-[#3FC7B0]">
               Curriculum Vitae
             </h1>
             <p className="mt-2.5 max-w-2xl font-mono text-xs sm:text-sm font-light leading-relaxed tracking-wide text-[#8A9295]">
@@ -60,7 +61,21 @@ export default async function ResumePage() {
             </p>
           </div>
 
-          <PdfViewer url={resumeUrl} title="Leta_Kasahun_Resume.pdf" />
+          {resumeUrl ? (
+            <PdfViewer url={resumeUrl} title="Resume.pdf" />
+          ) : (
+            <div className="rounded-xl border border-[#22282B] bg-[#171B1D] p-12 text-center">
+              <p className="font-mono text-sm text-[#8A9295]">
+                No resume document has been uploaded yet. You can upload one via the Admin Dashboard.
+              </p>
+              <Link
+                href="/contact"
+                className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[#22282B] bg-transparent px-4 py-2 font-mono text-xs text-[#3FC7B0] transition-colors hover:border-[#3FC7B0]"
+              >
+                Contact Directly &rarr;
+              </Link>
+            </div>
+          )}
         </div>
       </Container>
     </div>

@@ -15,12 +15,48 @@ type PdfModalProps = {
   onClose: () => void;
 };
 
-function getPdfJs(): Promise<any> {
+type PdfRenderTask = {
+  promise: Promise<void>;
+  cancel: () => void;
+};
+
+type PdfPage = {
+  getViewport: (options: { scale: number; rotation: number }) => {
+    width: number;
+    height: number;
+  };
+  render: (context: {
+    canvasContext: CanvasRenderingContext2D;
+    viewport: { width: number; height: number };
+  }) => PdfRenderTask;
+};
+
+type PdfDocumentProxy = {
+  numPages: number;
+  getPage: (pageNumber: number) => Promise<PdfPage>;
+  destroy?: () => Promise<void>;
+};
+
+type PdfJsLib = {
+  GlobalWorkerOptions: {
+    workerSrc: string;
+  };
+  getDocument: (options: {
+    url: string;
+    withCredentials?: boolean;
+    cMapUrl?: string;
+    cMapPacked?: boolean;
+  }) => {
+    promise: Promise<PdfDocumentProxy>;
+  };
+};
+
+function getPdfJs(): Promise<PdfJsLib> {
   if (typeof window === "undefined") {
     return Promise.reject(new Error("Window not available"));
   }
 
-  const win = window as any;
+  const win = window as unknown as Window & { pdfjsLib?: PdfJsLib };
   if (win.pdfjsLib) {
     return Promise.resolve(win.pdfjsLib);
   }
@@ -64,7 +100,7 @@ function getPdfJs(): Promise<any> {
 }
 
 export function PdfViewer({ url, title = "Document Viewer", className = "" }: PdfViewerProps) {
-  const [pdfDoc, setPdfDoc] = useState<any>(null);
+  const [pdfDoc, setPdfDoc] = useState<PdfDocumentProxy | null>(null);
   const [numPages, setNumPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [zoom, setZoom] = useState<number>(100);
@@ -75,7 +111,7 @@ export function PdfViewer({ url, title = "Document Viewer", className = "" }: Pd
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const renderTaskRef = useRef<any>(null);
+  const renderTaskRef = useRef<PdfRenderTask | null>(null);
 
   const handleZoomIn = () => setZoom((prev) => Math.min(prev + 20, 260));
   const handleZoomOut = () => setZoom((prev) => Math.max(prev - 20, 40));
@@ -168,8 +204,13 @@ export function PdfViewer({ url, title = "Document Viewer", className = "" }: Pd
       renderTaskRef.current = task;
       await task.promise;
       renderTaskRef.current = null;
-    } catch (err: any) {
-      if (err?.name === "RenderingCancelledException") {
+    } catch (err: unknown) {
+      if (
+        err &&
+        typeof err === "object" &&
+        "name" in err &&
+        (err as { name: string }).name === "RenderingCancelledException"
+      ) {
         return;
       }
     }
