@@ -178,68 +178,195 @@ async function main() {
     }
   }
 
-  const existingProjects = await prisma.project.findMany();
-  if (existingProjects.length === 0) {
-    await prisma.project.create({
-      data: {
-        title: "Distributed Event Ingestion Engine",
-        slug: "distributed-event-engine",
-        description: "High-throughput fault-tolerant event broker with persistent write-ahead log and sub-millisecond dispatching.",
-        content: "Detailed architectural breakdown of the event broker featuring lock-free ring buffers, Raft replication, and zero-copy network serialization.",
-        technologies: ["Go", "Kafka", "Redis", "PostgreSQL", "Docker", "gRPC"],
-        githubUrl: "https://github.com/Leta-Kasahun/event-broker",
-        liveUrl: "https://event-broker.demo.dev",
-        featured: true,
-        published: true,
-        order: 0,
-        caseStudy: {
-          situation: "Legacy event ingestion suffered from consumer lag spikes and occasional message duplication during peak traffic of 30k req/sec.",
-          task: "Architect a resilient, horizontally scalable broker capable of sustaining 100k+ req/sec with guaranteed exactly-once processing semantics.",
-          action: "Implemented a custom partition scheduler in Go with memory-mapped write-ahead logging and Redis-backed state coordination.",
-          result: "Achieved 120k req/sec peak throughput, zero message loss across node failure simulations, and cut infrastructure costs by 45%.",
-        },
-      },
-    });
+  const projectsData = [
+    {
+      slug: "haseri",
+      title: "Haseri — Local Technician Finder Platform",
+      description: "A verified service marketplace connecting customers with trusted technicians for secure hiring and streamlined service delivery.",
+      content: "I built Haseri as a unified platform where customers can post jobs, hire verified technicians, communicate in real-time, and make secure payments. Technicians can build professional profiles, get verified, apply for jobs, and earn reputation through reviews.",
+      coverImage: "/images/haseri.png",
+      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "PHP", "MySQL"],
+      githubUrl: "https://github.com/Leta-Kasahun/haseri",
+      liveUrl: null,
+      featured: true,
+      published: true,
+      order: 0,
+      caseStudy: {
+        category: "Web-Based Local Technician Finder",
+        role: "Full-stack Developer",
+        problem: "In Ethiopia, finding reliable technicians is often unstructured and inefficient. People depend on Telegram groups, social media, or word-of-mouth, which leads to lack of trust, no verification, and poor accountability. At the same time, skilled workers struggle to find consistent and visible job opportunities.",
+        solution: "I built Haseri as a unified platform where customers can post jobs, hire verified technicians, communicate in real-time, and make secure payments. Technicians can build professional profiles, get verified, apply for jobs, and earn reputation through reviews.",
+        keyFeatures: [
+          "Job posting and technician hiring system",
+          "Verified technician profiles with ratings and reviews",
+          "Real-time chat between users",
+          "Secure payments via Chapa",
+          "Admin dashboard for user and job management",
+          "Document-based technician verification"
+        ],
+        challenge: "One major challenge was building a trustworthy verification system. I solved this by implementing an admin approval workflow where technicians submit IDs and certificates for validation before getting verified badges.",
+        outcome: "The platform improves trust and efficiency in hiring local technicians by centralizing services, reducing reliance on informal channels, and introducing structured job management and verification."
+      }
+    },
+    {
+      slug: "etworks",
+      title: "Etworks — Job Site Marketplace Platform",
+      description: "An intelligent job portal enabling secure recruitment, AI-powered candidate matching, and structured hiring workflows.",
+      content: "The system provides a centralized job portal where users can register, manage profiles, post and apply for jobs, and track applications. It also includes admin verification, CV building tools, payment processing, and AI-powered job assistance to improve hiring efficiency.",
+      coverImage: "/images/Etworks.png",
+      technologies: ["Spring Boot", "Java", "PostgreSQL", "React", "Tailwind CSS"],
+      githubUrl: "https://github.com/Leta-Kasahun/Jobsphere",
+      liveUrl: null,
+      featured: true,
+      published: true,
+      order: 1,
+      caseStudy: {
+        category: "Web-Based Job Portal & HR Tech",
+        role: "Backend & Database Developer",
+        problem: "Traditional job searching platforms often suffer from fragmented workflows, limited verification, and lack of structured communication between employers and job seekers. This leads to inefficient hiring processes and poor candidate matching.",
+        solution: "The system provides a centralized job portal where users can register, manage profiles, post and apply for jobs, and track applications. It also includes admin verification, CV building tools, payment processing, and AI-powered job assistance to improve hiring efficiency.",
+        keyFeatures: [
+          "Secure authentication (JWT, OTP, OAuth2, role-based access)",
+          "Job posting, filtering, saving, and application system",
+          "Employer company profiles with verification workflow",
+          "Seeker profile management and CV builder system",
+          "Admin dashboard for users, jobs, and analytics",
+          "Payment integration for job posting and verification",
+          "Notifications and AI-powered job assistant",
+          "Job matching and recommendation system"
+        ],
+        challenge: "One major challenge was designing a scalable relational database that supports complex relationships between users, jobs, applications, and companies. I solved this using normalized PostgreSQL schema design with Flyway migrations and carefully structured API layering for consistency.",
+        outcome: "The system delivers a complete job portal ecosystem with structured hiring workflows, improved job matching, and centralized management for seekers, employers, and admins."
+      }
+    },
+    {
+      slug: "bondex",
+      title: "Bondex — CRM System",
+      description: "A centralized CRM platform for lead management, business communication, and multi-channel customer engagement automation.",
+      content: "I built a centralized full-stack CRM platform that unifies lead management and communication. It streamlines the entire workflow from lead capture to conversion, with integrations for AI assistance and messaging tools to improve response efficiency.",
+      coverImage: "/images/bondex.png",
+      technologies: ["TypeScript", "Node.js", "Express", "PostgreSQL"],
+      githubUrl: "https://github.com/Leta-Kasahun/bondex_frontend",
+      liveUrl: null,
+      featured: true,
+      published: true,
+      order: 2,
+      caseStudy: {
+        category: "Web-Based CRM & Lead Management",
+        role: "Full-stack Developer",
+        problem: "Businesses face difficulty managing leads coming from different sources such as web forms, email, and messaging platforms. This leads to disorganized data, missed follow-ups, and inefficient communication with potential customers.",
+        solution: "I built a centralized full-stack CRM platform that unifies lead management and communication. It streamlines the entire workflow from lead capture to conversion, with integrations for AI assistance and messaging tools to improve response efficiency.",
+        keyFeatures: [
+          "User and admin authentication system",
+          "Lead lifecycle management (create, track, convert)",
+          "Business and deal tracking system",
+          "AI-powered assistance for lead analysis and replies",
+          "Gmail and Telegram integration for communication",
+          "Notification system for updates and alerts",
+          "Role-based access control (admin/user)"
+        ],
+        challenge: "Integrating multiple external services (AI, Gmail, Telegram) while keeping the system modular was challenging. I solved this by organizing the project into feature-based modules with consistent validation, middleware, and service separation.",
+        outcome: "The system improves lead organization, automates communication workflows, and provides a scalable solution for managing customer relationships across multiple channels."
+      }
+    },
+    {
+      slug: "ethiointernship",
+      title: "Ethio Internship — Internship Management Platform",
+      description: "A web based internship platform connecting students with opportunities through secure applications and AI-powered recommendations.",
+      content: "I developed a full-stack internship platform that connects students and companies through a secure system for internship discovery, application management, AI-powered recommendations, and candidate tracking.",
+      coverImage: "/images/ethiointernship.png",
+      technologies: ["Next.js", "TypeScript", "PostgreSQL", "Express"],
+      githubUrl: "https://github.com/Leta-Kasahun/EthioInternShip",
+      liveUrl: null,
+      featured: true,
+      published: true,
+      order: 3,
+      caseStudy: {
+        category: "Web-Based Internship & Career Platform",
+        role: "Full-stack Developer",
+        problem: "Students often struggle to find structured internship opportunities, while companies lack a centralized system for managing applications, filtering candidates, and tracking internship workflows efficiently.",
+        solution: "I developed a full-stack internship platform that connects students and companies through a secure system for internship discovery, application management, AI-powered recommendations, and candidate tracking.",
+        keyFeatures: [
+          "Secure authentication with Google and GitHub OAuth",
+          "Student profile creation with CV upload",
+          "Internship posting and management system",
+          "Advanced internship search and filtering",
+          "Application tracking dashboard",
+          "AI-powered internship recommendations",
+          "Company applicant management dashboard",
+          "Role-based access control"
+        ],
+        challenge: "Designing secure multi-role authentication while integrating third-party OAuth providers and maintaining smooth application workflows was challenging. I solved this by implementing structured role-based access control and modular authentication architecture.",
+        outcome: "The platform streamlines internship discovery and application workflows, making it easier for students to find opportunities and for companies to identify qualified candidates efficiently."
+      }
+    },
+    {
+      slug: "shopsphere",
+      title: "ShopSphere — E-Commerce Platform",
+      description: "A scalable e-commerce marketplace supporting product discovery, secure checkout, seller management, and real-time order tracking.",
+      content: "I developed a full-stack e-commerce platform that connects customers and sellers in one system. It provides structured product management, secure authentication, cart and order workflows, and seller dashboards for managing stores and sales.",
+      coverImage: "/images/shopsphere.png",
+      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Node.js", "MongoDB"],
+      githubUrl: "https://github.com/Leta-Kasahun/CodeAlpha_Ecommerce_Frontend",
+      liveUrl: null,
+      featured: true,
+      published: true,
+      order: 4,
+      caseStudy: {
+        category: "Web-Based E-Commerce",
+        role: "Full-stack Developer",
+        problem: "Traditional small-scale online selling often lacks a unified platform where sellers can manage products and orders while customers enjoy a smooth shopping experience with proper search, filtering, and order tracking.",
+        solution: "I developed a full-stack e-commerce platform that connects customers and sellers in one system. It provides structured product management, secure authentication, cart and order workflows, and seller dashboards for managing stores and sales.",
+        keyFeatures: [
+          "User authentication with OTP and JWT",
+          "Product catalog with filtering, sorting, and search",
+          "Shopping cart and wishlist system",
+          "Secure checkout and order tracking",
+          "Seller dashboard for product and order management",
+          "Role-based access (Customer & Seller)",
+          "Analytics dashboard for sales insights"
+        ],
+        challenge: "Managing complex state across cart, orders, and seller dashboards was challenging. I solved this using Zustand for centralized state management and modular component design for scalability and maintainability.",
+        outcome: "The platform delivers a complete e-commerce experience with smooth user interaction, efficient seller management, and scalable architecture suitable for real-world online marketplace systems."
+      }
+    },
+    {
+      slug: "sharesphere",
+      title: "ShareSphere — Social Media Platform",
+      description: "A full-stack social networking platform enabling content sharing, real-time interactions, user engagement, and profile management.",
+      content: "I developed a full-stack social platform that supports user authentication, post creation, engagement features, and profile management. The system integrates frontend UI with backend APIs to provide a complete social networking experience including stories, media uploads, and Google OAuth login.",
+      coverImage: "/images/sharesphere.png",
+      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Node.js", "MongoDB"],
+      githubUrl: "https://github.com/Leta-Kasahun/CodeAlpha_SocialMediaApp_Frontend",
+      liveUrl: null,
+      featured: true,
+      published: true,
+      order: 5,
+      caseStudy: {
+        category: "Web-Based Social Networking",
+        role: "Full-stack Developer",
+        problem: "Most basic social media clones either lack real interaction features or do not implement a complete full-stack workflow. There is often missing functionality in authentication, media handling, and user interaction systems.",
+        solution: "I developed a full-stack social platform that supports user authentication, post creation, engagement features, and profile management. The system integrates frontend UI with backend APIs to provide a complete social networking experience including stories, media uploads, and Google OAuth login.",
+        keyFeatures: [
+          "User authentication (email/password + Google Sign-In)",
+          "Create, edit, delete posts with images and text",
+          "Like and comment system",
+          "User profiles with editable information",
+          "Stories feature with 24-hour expiry",
+          "Media upload and storage using Cloudinary",
+          "Protected routes and secure API integration"
+        ],
+        challenge: "A key challenge was managing real-time user interactions (posts, likes, comments) while keeping frontend and backend data synchronized. I solved this through structured API design, centralized state management using Zustand, and clean separation of concerns in components and services.",
+        outcome: "The project delivers a complete full-stack social media experience with smooth user interaction, scalable architecture, and practical implementation of authentication, media handling and social features."
+      }
+    }
+  ];
 
-    await prisma.project.create({
-      data: {
-        title: "Real-Time Financial Settlement Ledger",
-        slug: "financial-settlement-ledger",
-        description: "Double-entry accounting and real-time transaction processing API with strict ACID guarantees.",
-        content: "Cryptographically verifiable ledger engine engineered in Rust with Tokio async runtime and PostgreSQL transaction isolation.",
-        technologies: ["Rust", "PostgreSQL", "Tokio", "Docker", "REST API"],
-        githubUrl: "https://github.com/Leta-Kasahun/ledger-core",
-        featured: true,
-        published: true,
-        order: 1,
-        caseStudy: {
-          situation: "Financial reconciliation required nightly batch jobs that frequently timed out due to lock contention in legacy monolithic database.",
-          task: "Design an immutable ledger ledger service with real-time balance resolution and automated audit trails.",
-          action: "Utilized event-sourcing patterns with optimistic concurrency control and partitioned database tables in PostgreSQL.",
-          result: "Eliminated batch reconciliation window, enabled sub-second settlement verification, and passed SOC2 audit standards.",
-        },
-      },
-    });
-
-    await prisma.project.create({
-      data: {
-        title: "Collaborative Analytics & Workflow Canvas",
-        slug: "collaborative-analytics-canvas",
-        description: "Interactive real-time visual canvas for distributed telemetry metrics, query building, and incident collaboration.",
-        content: "Browser-based infinite canvas with WebSocket sync, CRDT conflict resolution, and fluid SVG/Canvas rendering.",
-        technologies: ["TypeScript", "Next.js 16", "React 19", "Tailwind CSS", "Prisma", "WebSockets"],
-        githubUrl: "https://github.com/Leta-Kasahun/analytics-canvas",
-        liveUrl: "https://canvas.demo.dev",
-        featured: true,
-        published: true,
-        order: 2,
-        caseStudy: {
-          situation: "Engineering teams lacked a unified real-time dashboard to diagnose multi-service incident graphs collaboratively.",
-          task: "Build an ultra-responsive visual workspace supporting 50+ concurrent users with zero latency jitter.",
-          action: "Built client state management using Yjs CRDTs over WebSockets and optimized React 19 rendering pipelines.",
-          result: "Decreased mean time to resolution (MTTR) during outages by 35% across engineering teams.",
-        },
-      },
+  for (const project of projectsData) {
+    await prisma.project.upsert({
+      where: { slug: project.slug },
+      update: project,
+      create: project,
     });
   }
 
@@ -376,6 +503,60 @@ By utilizing PostgreSQL \`INCLUDE\` clauses, index-only scans can satisfy querie
         published: true,
         featured: true,
         publishedAt: new Date("2024-01-20"),
+      },
+    });
+  }
+
+  const skillsData = [
+    { name: "TypeScript", category: "Languages", level: "Advanced", order: 0 },
+    { name: "JavaScript", category: "Languages", level: "Expert", order: 1 },
+    { name: "Java", category: "Languages", level: "Advanced", order: 2 },
+    { name: "PHP", category: "Languages", level: "Proficient", order: 3 },
+    { name: "Python", category: "Languages", level: "Proficient", order: 4 },
+    { name: "SQL", category: "Languages", level: "Advanced", order: 5 },
+
+    { name: "Spring Boot", category: "Backend & Systems", level: "Advanced", order: 0 },
+    { name: "Node.js", category: "Backend & Systems", level: "Expert", order: 1 },
+    { name: "Express", category: "Backend & Systems", level: "Expert", order: 2 },
+    { name: "Distributed Systems", category: "Backend & Systems", level: "Advanced", order: 3 },
+    { name: "RESTful APIs", category: "Backend & Systems", level: "Expert", order: 4 },
+    { name: "Microservices", category: "Backend & Systems", level: "Advanced", order: 5 },
+
+    { name: "Next.js", category: "Frontend", level: "Expert", order: 0 },
+    { name: "React", category: "Frontend", level: "Expert", order: 1 },
+    { name: "Tailwind CSS", category: "Frontend", level: "Expert", order: 2 },
+    { name: "State Management", category: "Frontend", level: "Advanced", order: 3 },
+    { name: "HTML5 / CSS3", category: "Frontend", level: "Expert", order: 4 },
+
+    { name: "PostgreSQL", category: "Databases", level: "Advanced", order: 0 },
+    { name: "MySQL", category: "Databases", level: "Advanced", order: 1 },
+    { name: "MongoDB", category: "Databases", level: "Advanced", order: 2 },
+    { name: "Redis", category: "Databases", level: "Proficient", order: 3 },
+    { name: "Prisma ORM", category: "Databases", level: "Expert", order: 4 },
+
+    { name: "Docker", category: "DevOps & Cloud", level: "Advanced", order: 0 },
+    { name: "Git & GitHub", category: "DevOps & Cloud", level: "Expert", order: 1 },
+    { name: "Linux / Bash", category: "DevOps & Cloud", level: "Advanced", order: 2 },
+    { name: "CI / CD", category: "DevOps & Cloud", level: "Proficient", order: 3 },
+  ];
+
+  for (const s of skillsData) {
+    await prisma.skill.upsert({
+      where: {
+        name_category: {
+          name: s.name,
+          category: s.category,
+        },
+      },
+      update: {
+        level: s.level,
+        order: s.order,
+      },
+      create: {
+        name: s.name,
+        category: s.category,
+        level: s.level,
+        order: s.order,
       },
     });
   }
