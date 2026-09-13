@@ -109,13 +109,13 @@ export function CertificateForm({ certificate }: CertificateFormProps) {
             htmlFor="imageFile"
             className="block font-mono text-xs font-medium text-[#8A9295]"
           >
-            Badge / Certificate Image
+            Certificate Document (Image or PDF)
           </label>
           <input
             id="imageFile"
             name="imageFile"
             type="file"
-            accept="image/*"
+            accept="image/*,application/pdf"
             className="mt-1.5 w-full rounded-lg border border-[#22282B] bg-[#0E1113] px-3.5 py-2 text-xs text-[#8A9295] file:mr-3 file:rounded-md file:border-0 file:bg-[#22282B] file:px-2.5 file:py-1 file:font-mono file:text-xs file:text-[#E7EAEA] file:cursor-pointer hover:file:bg-[#3FC7B0] hover:file:text-[#0E1113]"
           />
           {certificate?.imageUrl && (
@@ -127,7 +127,9 @@ export function CertificateForm({ certificate }: CertificateFormProps) {
                 rel="noopener noreferrer"
                 className="text-[#3FC7B0] underline"
               >
-                View Badge Image
+                {certificate.imageUrl.toLowerCase().endsWith(".pdf")
+                  ? "View Current PDF Document"
+                  : "View Current Certificate Image"}
               </a>
             </p>
           )}
