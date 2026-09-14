@@ -148,6 +148,8 @@ export async function createProjectAction(
     revalidatePath("/admin/projects");
     revalidatePath("/admin");
     revalidatePath("/projects");
+    revalidatePath(`/projects/${data.slug}`);
+    revalidatePath("/projects/[slug]", "page");
     revalidatePath("/");
   } catch {
     return { error: "Failed to create project. Please try again." };
@@ -289,6 +291,8 @@ export async function updateProjectAction(
     revalidatePath(`/admin/projects/${id}`);
     revalidatePath("/admin");
     revalidatePath("/projects");
+    revalidatePath(`/projects/${data.slug}`);
+    revalidatePath("/projects/[slug]", "page");
     revalidatePath("/");
   } catch {
     return { error: "Failed to update project. Please try again." };
@@ -311,6 +315,7 @@ export async function deleteProjectAction(id: string): Promise<ProjectActionResu
     revalidatePath("/admin/projects");
     revalidatePath("/admin");
     revalidatePath("/projects");
+    revalidatePath("/projects/[slug]", "page");
     revalidatePath("/");
 
     return { success: true };

@@ -70,8 +70,7 @@ function getPdfJs(): Promise<PdfJsLib> {
       }
       existing.addEventListener("load", () => {
         if (win.pdfjsLib) {
-          win.pdfjsLib.GlobalWorkerOptions.workerSrc =
-            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+          win.pdfjsLib.GlobalWorkerOptions.workerSrc = "/vendor/pdf.worker.min.js";
           resolve(win.pdfjsLib);
         } else {
           reject(new Error("PDF.js unavailable"));
@@ -83,18 +82,31 @@ function getPdfJs(): Promise<PdfJsLib> {
 
     const script = document.createElement("script");
     script.id = "pdfjs-lib-script";
-    script.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+    script.src = "/vendor/pdf.min.js";
     script.async = true;
     script.onload = () => {
       if (win.pdfjsLib) {
-        win.pdfjsLib.GlobalWorkerOptions.workerSrc =
-          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+        win.pdfjsLib.GlobalWorkerOptions.workerSrc = "/vendor/pdf.worker.min.js";
         resolve(win.pdfjsLib);
       } else {
         reject(new Error("PDF.js not loaded"));
       }
     };
-    script.onerror = () => reject(new Error("Network error"));
+    script.onerror = () => {
+      // Fallback to CDN if local file fails
+      const cdnScript = document.createElement("script");
+      cdnScript.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+      cdnScript.onload = () => {
+        if (win.pdfjsLib) {
+          win.pdfjsLib.GlobalWorkerOptions.workerSrc = "/vendor/pdf.worker.min.js";
+          resolve(win.pdfjsLib);
+        } else {
+          reject(new Error("PDF.js not loaded"));
+        }
+      };
+      cdnScript.onerror = () => reject(new Error("Network error"));
+      document.head.appendChild(cdnScript);
+    };
     document.head.appendChild(script);
   });
 }
