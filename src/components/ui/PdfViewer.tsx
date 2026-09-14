@@ -522,3 +522,118 @@ export function PdfViewerModal({ url, title = "Document Viewer", isOpen, onClose
     </div>
   );
 }
+
+export function PdfThumbnail({
+  url,
+  title,
+  className = "",
+}: {
+  url: string;
+  title?: string;
+  className?: string;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    let isCancelled = false;
+    let renderTask: PdfRenderTask | null = null;
+    setIsLoaded(false);
+    setHasError(false);
+
+    getPdfJs()
+      .then((pdfjs) => {
+        return pdfjs.getDocument({
+          url,
+          cMapUrl: "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/",
+          cMapPacked: true,
+        }).promise;
+      })
+      .then(async (doc) => {
+        if (isCancelled) return;
+        const page = await doc.getPage(1);
+        if (isCancelled || !canvasRef.current) return;
+
+        const viewport = page.getViewport({ scale: 1.0, rotation: 0 });
+        const canvas = canvasRef.current;
+        const context = canvas.getContext("2d");
+        if (!context) return;
+
+        const targetWidth = 600;
+        const scale = targetWidth / viewport.width;
+        const scaledViewport = page.getViewport({ scale, rotation: 0 });
+
+        const pixelRatio = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
+        canvas.width = Math.floor(scaledViewport.width * pixelRatio);
+        canvas.height = Math.floor(scaledViewport.height * pixelRatio);
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+
+        context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+
+        renderTask = page.render({
+          canvasContext: context,
+          viewport: scaledViewport,
+        });
+
+        await renderTask.promise;
+        if (!isCancelled) {
+          setIsLoaded(true);
+        }
+      })
+      .catch(() => {
+        if (!isCancelled) {
+          setHasError(true);
+        }
+      });
+
+    return () => {
+      isCancelled = true;
+      if (renderTask) {
+        try {
+          renderTask.cancel();
+        } catch {
+        }
+      }
+    };
+  }, [url]);
+
+  return (
+    <div className={`relative w-full h-full flex items-center justify-center overflow-hidden bg-[#0A0D0E] ${className}`}>
+      <canvas
+        ref={canvasRef}
+        className={`w-full h-full object-contain transition-opacity duration-500 ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
+      />
+
+      {!isLoaded && !hasError && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#0E1113] p-4 text-center">
+          <div className="h-7 w-7 animate-spin rounded-full border-2 border-[#22282B] border-t-[#3FC7B0]" />
+          <span className="mt-2 font-mono text-[10px] text-[#8A9295] tracking-wider">
+            Loading document...
+          </span>
+        </div>
+      )}
+
+      {hasError && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#0E1113] p-4 text-center">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#3FC7B0]/30 bg-[#3FC7B0]/10 text-[#3FC7B0] mb-2">
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+          </div>
+          <span className="font-mono text-xs font-semibold text-white truncate max-w-full">
+            {title || "PDF Certificate"}
+          </span>
+          <span className="mt-1 font-mono text-[10px] text-[#3FC7B0]">
+            Verified Document
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+

@@ -14,6 +14,10 @@ type CaseStudyData = {
   task?: string;
   action?: string;
   result?: string;
+  problem?: string;
+  solution?: string;
+  challenge?: string;
+  outcome?: string;
 };
 
 type ProjectFormProps = {
@@ -31,11 +35,14 @@ export function ProjectForm({ project }: ProjectFormProps) {
   >(boundAction, null);
 
   const caseStudy = (project?.caseStudy as CaseStudyData | null) || null;
+  const situationValue = caseStudy?.situation || caseStudy?.problem || "";
+  const taskValue = caseStudy?.task || caseStudy?.challenge || "";
+  const actionValue = caseStudy?.action || caseStudy?.solution || "";
+  const resultValue = caseStudy?.result || caseStudy?.outcome || "";
 
   return (
     <form
       action={formAction}
-      encType="multipart/form-data"
       className="space-y-8"
     >
       {state?.error && (
@@ -224,7 +231,7 @@ export function ProjectForm({ project }: ProjectFormProps) {
               id="situation"
               name="situation"
               rows={3}
-              defaultValue={caseStudy?.situation || ""}
+              defaultValue={situationValue}
               placeholder="What was the initial bottleneck, legacy constraint, or challenge?"
               className="mt-1.5 w-full rounded-lg border border-[#22282B] bg-[#0E1113] px-3.5 py-2.5 text-sm text-[#E7EAEA] placeholder-[#8A9295]/60 outline-none transition-colors focus:border-[#3FC7B0] focus:ring-1 focus:ring-[#3FC7B0]"
             />
@@ -241,7 +248,7 @@ export function ProjectForm({ project }: ProjectFormProps) {
               id="task"
               name="task"
               rows={3}
-              defaultValue={caseStudy?.task || ""}
+              defaultValue={taskValue}
               placeholder="What specific goal or throughput requirement needed to be achieved?"
               className="mt-1.5 w-full rounded-lg border border-[#22282B] bg-[#0E1113] px-3.5 py-2.5 text-sm text-[#E7EAEA] placeholder-[#8A9295]/60 outline-none transition-colors focus:border-[#3FC7B0] focus:ring-1 focus:ring-[#3FC7B0]"
             />
@@ -258,7 +265,7 @@ export function ProjectForm({ project }: ProjectFormProps) {
               id="action"
               name="action"
               rows={3}
-              defaultValue={caseStudy?.action || ""}
+              defaultValue={actionValue}
               placeholder="How did you architect, optimize, and deliver the solution?"
               className="mt-1.5 w-full rounded-lg border border-[#22282B] bg-[#0E1113] px-3.5 py-2.5 text-sm text-[#E7EAEA] placeholder-[#8A9295]/60 outline-none transition-colors focus:border-[#3FC7B0] focus:ring-1 focus:ring-[#3FC7B0]"
             />
@@ -275,7 +282,7 @@ export function ProjectForm({ project }: ProjectFormProps) {
               id="result"
               name="result"
               rows={3}
-              defaultValue={caseStudy?.result || ""}
+              defaultValue={resultValue}
               placeholder="Latency reduced by 40%, 99.99% uptime, 10x throughput, etc."
               className="mt-1.5 w-full rounded-lg border border-[#22282B] bg-[#0E1113] px-3.5 py-2.5 text-sm text-[#E7EAEA] placeholder-[#8A9295]/60 outline-none transition-colors focus:border-[#3FC7B0] focus:ring-1 focus:ring-[#3FC7B0]"
             />

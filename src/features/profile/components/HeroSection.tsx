@@ -132,7 +132,7 @@ export function HeroSection({ profile, socialLinks }: HeroSectionProps) {
 
           {profile.imageUrl ? (
             <div className="flex items-center justify-center lg:col-span-5 lg:justify-end">
-              <div className="relative w-full max-w-[220px] xs:max-w-[270px] sm:max-w-[320px] lg:max-w-[360px] xl:max-w-[380px]">
+              <div className="relative w-full max-w-[250px] xs:max-w-[300px] sm:max-w-[360px] lg:max-w-[420px] xl:max-w-[450px]">
                 <div className="relative aspect-[5/6] w-full p-2 sm:p-2.5 rounded-tl-[36px] sm:rounded-tl-[54px] rounded-br-[36px] sm:rounded-br-[54px] rounded-tr-none rounded-bl-none border-[3px] border-[#3FC7B0] bg-[#0E1113] shadow-2xl transition-all duration-300">
                   <HeroAvatar src={profile.imageUrl} alt={profile.name || "Profile"} />
                 </div>

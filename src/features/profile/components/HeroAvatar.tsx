@@ -17,7 +17,7 @@ export function HeroAvatar({ src, alt }: HeroAvatarProps) {
         src={src}
         alt={alt}
         fill
-        sizes="(max-width: 640px) 260px, (max-width: 1024px) 330px, 380px"
+        sizes="(max-width: 640px) 300px, (max-width: 1024px) 380px, 460px"
         className={`object-cover object-top transition-all duration-700 ease-out ${
           loaded ? "opacity-100 scale-100" : "opacity-90 scale-[1.02]"
         }`}

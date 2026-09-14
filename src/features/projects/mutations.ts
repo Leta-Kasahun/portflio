@@ -47,15 +47,44 @@ export async function createProjectAction(
     .map((tech) => tech.trim())
     .filter(Boolean);
 
-  const situation = String(formData.get("situation") || "").trim();
-  const task = String(formData.get("task") || "").trim();
-  const action = String(formData.get("action") || "").trim();
-  const result = String(formData.get("result") || "").trim();
+  const category = String(formData.get("category") || "").trim();
+  const role = String(formData.get("role") || "").trim();
+  const problem = String(formData.get("problem") || formData.get("situation") || "").trim();
+  const solution = String(formData.get("solution") || formData.get("action") || "").trim();
+  const challenge = String(formData.get("challenge") || formData.get("task") || "").trim();
+  const outcome = String(formData.get("outcome") || formData.get("result") || "").trim();
+  const rawKeyFeatures = String(formData.get("keyFeatures") || "").trim();
+  const keyFeatures = rawKeyFeatures
+    ? rawKeyFeatures
+        .split("\n")
+        .map((item) => item.trim().replace(/^[-*•]\s*/, ""))
+        .filter(Boolean)
+    : [];
 
-  const caseStudyData =
-    situation || task || action || result
-      ? { situation, task, action, result }
-      : undefined;
+  const hasCaseStudy =
+    category ||
+    role ||
+    problem ||
+    solution ||
+    challenge ||
+    outcome ||
+    keyFeatures.length > 0;
+
+  const caseStudyData = hasCaseStudy
+    ? {
+        category: category || null,
+        role: role || null,
+        problem: problem || null,
+        solution: solution || null,
+        challenge: challenge || null,
+        outcome: outcome || null,
+        keyFeatures,
+        situation: problem || null,
+        task: challenge || null,
+        action: solution || null,
+        result: outcome || null,
+      }
+    : undefined;
 
   const rawData = {
     title,
@@ -69,10 +98,17 @@ export async function createProjectAction(
     featured: formData.get("featured") === "on" || formData.get("featured") === "true",
     published: formData.get("published") === "on" || formData.get("published") === "true",
     order: Number(formData.get("order")) || 0,
-    situation: situation || null,
-    task: task || null,
-    action: action || null,
-    result: result || null,
+    category: category || null,
+    role: role || null,
+    problem: problem || null,
+    solution: solution || null,
+    challenge: challenge || null,
+    outcome: outcome || null,
+    keyFeatures,
+    situation: problem || null,
+    task: challenge || null,
+    action: solution || null,
+    result: outcome || null,
   };
 
   const validation = projectSchema.safeParse(rawData);
@@ -147,15 +183,44 @@ export async function updateProjectAction(
     .map((tech) => tech.trim())
     .filter(Boolean);
 
-  const situation = String(formData.get("situation") || "").trim();
-  const task = String(formData.get("task") || "").trim();
-  const action = String(formData.get("action") || "").trim();
-  const result = String(formData.get("result") || "").trim();
+  const category = String(formData.get("category") || "").trim();
+  const role = String(formData.get("role") || "").trim();
+  const problem = String(formData.get("problem") || formData.get("situation") || "").trim();
+  const solution = String(formData.get("solution") || formData.get("action") || "").trim();
+  const challenge = String(formData.get("challenge") || formData.get("task") || "").trim();
+  const outcome = String(formData.get("outcome") || formData.get("result") || "").trim();
+  const rawKeyFeatures = String(formData.get("keyFeatures") || "").trim();
+  const keyFeatures = rawKeyFeatures
+    ? rawKeyFeatures
+        .split("\n")
+        .map((item) => item.trim().replace(/^[-*•]\s*/, ""))
+        .filter(Boolean)
+    : [];
 
-  const caseStudyData =
-    situation || task || action || result
-      ? { situation, task, action, result }
-      : undefined;
+  const hasCaseStudy =
+    category ||
+    role ||
+    problem ||
+    solution ||
+    challenge ||
+    outcome ||
+    keyFeatures.length > 0;
+
+  const caseStudyData = hasCaseStudy
+    ? {
+        category: category || null,
+        role: role || null,
+        problem: problem || null,
+        solution: solution || null,
+        challenge: challenge || null,
+        outcome: outcome || null,
+        keyFeatures,
+        situation: problem || null,
+        task: challenge || null,
+        action: solution || null,
+        result: outcome || null,
+      }
+    : undefined;
 
   const rawData = {
     title,
@@ -169,10 +234,17 @@ export async function updateProjectAction(
     featured: formData.get("featured") === "on" || formData.get("featured") === "true",
     published: formData.get("published") === "on" || formData.get("published") === "true",
     order: Number(formData.get("order")) || 0,
-    situation: situation || null,
-    task: task || null,
-    action: action || null,
-    result: result || null,
+    category: category || null,
+    role: role || null,
+    problem: problem || null,
+    solution: solution || null,
+    challenge: challenge || null,
+    outcome: outcome || null,
+    keyFeatures,
+    situation: problem || null,
+    task: challenge || null,
+    action: solution || null,
+    result: outcome || null,
   };
 
   const validation = projectSchema.safeParse(rawData);

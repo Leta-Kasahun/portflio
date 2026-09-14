@@ -108,7 +108,7 @@ const jsonLd = {
       image: `${siteUrl}/images/hero.JPG`,
       sameAs: [
         "https://github.com/Leta-Kasahun",
-        "https://linkedin.com/in/letakasahun",
+        "https://linkedin.com/in/lkasahun",
         "https://x.com/letakasahun",
       ],
       description:

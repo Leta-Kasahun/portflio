@@ -48,7 +48,7 @@ export function ProfileForm({ profile }: ProfileFormProps) {
   }
 
   return (
-    <form action={formAction} encType="multipart/form-data" className="space-y-6">
+    <form action={formAction} className="space-y-6">
       <input type="hidden" name="id" value={profile.id} />
 
       {state?.error && (

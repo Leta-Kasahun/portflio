@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getSkillsGroupedByCategory } from "@/features/skills/queries";
 import { DeleteSkillButton } from "@/features/skills/components/delete-skill-button";
+import { CategoryActions } from "@/features/skills/components/category-actions";
 
 export default async function AdminSkillsPage() {
   const groupedSkills = await getSkillsGroupedByCategory();
@@ -14,7 +15,7 @@ export default async function AdminSkillsPage() {
             Skills Matrix
           </h1>
           <p className="mt-1 text-sm text-[#8A9295]">
-            Manage technical competencies, languages, tools, and proficiency levels.
+            Manage technical competencies, categories, and proficiency tiers.
           </p>
         </div>
         <div>
@@ -22,7 +23,7 @@ export default async function AdminSkillsPage() {
             href="/admin/skills/new"
             className="inline-flex items-center rounded-lg bg-[#3FC7B0] px-4 py-2 font-sans text-sm font-medium text-[#0E1113] transition-all hover:bg-[#35B8A3] active:bg-[#2FA995]"
           >
-            + Add Skill
+            + Add Skills
           </Link>
         </div>
       </div>
@@ -46,14 +47,19 @@ export default async function AdminSkillsPage() {
               key={category}
               className="rounded-xl border border-[#22282B] bg-[#171B1D] p-5 space-y-4"
             >
-              <div className="flex items-center justify-between border-b border-[#22282B] pb-3">
-                <h2 className="font-mono text-xs uppercase tracking-wider text-[#3FC7B0]">
-                  {category}
-                </h2>
-                <span className="font-mono text-xs text-[#8A9295]">
-                  {groupedSkills[category].length} item
-                  {groupedSkills[category].length > 1 ? "s" : ""}
-                </span>
+              <div className="flex flex-col gap-3 border-b border-[#22282B] pb-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-3">
+                  <h2 className="font-mono text-xs uppercase tracking-wider text-[#3FC7B0]">
+                    {category}
+                  </h2>
+                  <span className="rounded-full bg-[#22282B] px-2 py-0.5 font-mono text-[10px] text-[#8A9295]">
+                    {groupedSkills[category].length} {groupedSkills[category].length === 1 ? "skill" : "skills"}
+                  </span>
+                </div>
+                <CategoryActions
+                  category={category}
+                  count={groupedSkills[category].length}
+                />
               </div>
 
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">

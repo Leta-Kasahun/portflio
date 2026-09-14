@@ -34,3 +34,32 @@ export async function getSkillsGroupedByCategory(): Promise<Record<string, Skill
 
   return grouped;
 }
+
+export async function getSkillCategories(): Promise<string[]> {
+  try {
+    const skills = await prisma.skill.findMany({
+      select: { category: true },
+      distinct: ["category"],
+      orderBy: { category: "asc" },
+    });
+    const categoriesFromDb = skills.map((s) => s.category).filter(Boolean);
+    const defaults = [
+      "Languages & Runtimes",
+      "Distributed Systems & Cloud",
+      "Databases & Storage",
+      "Frameworks & Web",
+      "DevOps & Infrastructure",
+      "Architecture & Security",
+    ];
+    return Array.from(new Set([...categoriesFromDb, ...defaults]));
+  } catch {
+    return [
+      "Languages & Runtimes",
+      "Distributed Systems & Cloud",
+      "Databases & Storage",
+      "Frameworks & Web",
+      "DevOps & Infrastructure",
+      "Architecture & Security",
+    ];
+  }
+}

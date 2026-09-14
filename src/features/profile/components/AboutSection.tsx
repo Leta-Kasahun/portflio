@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Profile, Education } from "@/generated/prisma/client";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 
@@ -47,18 +46,6 @@ export function AboutSection({ profile, educations }: AboutSectionProps) {
                   <div className="mt-4 sm:mt-5 space-y-3 font-mono text-xs sm:text-sm font-light leading-relaxed tracking-wide text-[#E7EAEA] whitespace-pre-line">
                     <p>{profile.about || profile.bio}</p>
                   </div>
-                </div>
-
-                <div className="mt-5 sm:mt-8 border-t border-[#22282B] pt-3.5 sm:pt-5">
-                  <Link
-                    href="/resume"
-                    className="group inline-flex items-center gap-2 rounded-lg border border-[#22282B] bg-transparent px-3.5 py-1.5 xs:px-4 xs:py-2 font-mono text-[11px] xs:text-xs sm:text-[13px] font-light tracking-wider text-[#E7EAEA] transition-all duration-300 hover:border-[#3FC7B0] hover:text-[#3FC7B0] hover:bg-[#3FC7B0]/10 hover:-translate-y-0.5 active:translate-y-0"
-                  >
-                    <span>View CV / Resume (PDF)</span>
-                    <span className="text-[#8A9295] transition-colors duration-300 group-hover:text-[#3FC7B0]">
-                      &rarr;
-                    </span>
-                  </Link>
                 </div>
               </div>
             </div>

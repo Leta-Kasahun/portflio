@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getSkillById } from "@/features/skills/queries";
+import { getSkillById, getSkillCategories } from "@/features/skills/queries";
 import { SkillForm } from "@/features/skills/components/skill-form";
 
 type EditSkillPageProps = {
@@ -8,7 +8,10 @@ type EditSkillPageProps = {
 
 export default async function EditSkillPage({ params }: EditSkillPageProps) {
   const { id } = await params;
-  const skill = await getSkillById(id);
+  const [skill, categories] = await Promise.all([
+    getSkillById(id),
+    getSkillCategories(),
+  ]);
 
   if (!skill) {
     notFound();
@@ -26,7 +29,7 @@ export default async function EditSkillPage({ params }: EditSkillPageProps) {
       </div>
 
       <div className="rounded-xl border border-[#22282B] bg-[#171B1D] p-6 shadow-xl sm:p-8">
-        <SkillForm skill={skill} />
+        <SkillForm skill={skill} availableCategories={categories} />
       </div>
     </div>
   );

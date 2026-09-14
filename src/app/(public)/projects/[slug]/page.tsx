@@ -40,15 +40,44 @@ export default async function ProjectCaseStudyPage({ params }: Props) {
       ? (project.caseStudy as Record<string, unknown>)
       : null;
 
-  const category = (caseStudy?.category as string) || "Full-Stack Architecture";
+  const category = (caseStudy?.category as string) || null;
   const role = (caseStudy?.role as string) || null;
-  const problem = (caseStudy?.problem as string) || null;
-  const solution = (caseStudy?.solution as string) || project.content;
-  const challenge = (caseStudy?.challenge as string) || null;
-  const outcome = (caseStudy?.outcome as string) || null;
-  const keyFeatures = Array.isArray(caseStudy?.keyFeatures)
-    ? (caseStudy.keyFeatures as string[])
-    : [];
+  const architecture = project.content || null;
+  const situation =
+    (caseStudy?.situation as string) ||
+    (caseStudy?.problem as string) ||
+    null;
+  const task =
+    (caseStudy?.task as string) ||
+    (caseStudy?.challenge as string) ||
+    null;
+  const action =
+    (caseStudy?.action as string) ||
+    (caseStudy?.solution as string) ||
+    null;
+  const result =
+    (caseStudy?.result as string) ||
+    (caseStudy?.outcome as string) ||
+    null;
+
+  let keyFeatures: string[] = [];
+  if (Array.isArray(caseStudy?.keyFeatures)) {
+    keyFeatures = caseStudy.keyFeatures as string[];
+  } else if (typeof caseStudy?.keyFeatures === "string") {
+    keyFeatures = (caseStudy.keyFeatures as string)
+      .split("\n")
+      .map((item) => item.trim().replace(/^[-*•]\s*/, ""))
+      .filter(Boolean);
+  }
+
+  const hasCaseStudyContent = Boolean(
+    architecture ||
+      situation ||
+      task ||
+      action ||
+      result ||
+      keyFeatures.length > 0
+  );
 
   return (
     <div className="pt-24 pb-20 sm:pt-28 sm:pb-24">
@@ -160,77 +189,91 @@ export default async function ProjectCaseStudyPage({ params }: Props) {
             </div>
           ) : null}
 
-          <div className="mt-6 sm:mt-8 rounded-tl-[20px] sm:rounded-tl-[36px] rounded-br-[20px] sm:rounded-br-[36px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3.5 xs:p-6 sm:p-8 md:p-10 shadow-2xl space-y-6 sm:space-y-8">
-            {problem ? (
-              <div>
-                <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#3FC7B0]">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0]" />
-                  <span>Problem</span>
+          {hasCaseStudyContent ? (
+            <div className="mt-6 sm:mt-8 rounded-tl-[20px] sm:rounded-tl-[36px] rounded-br-[20px] sm:rounded-br-[36px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3.5 xs:p-6 sm:p-8 md:p-10 shadow-2xl space-y-6 sm:space-y-8">
+              {architecture ? (
+                <div>
+                  <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#3FC7B0]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0]" />
+                    <span>Architecture & Deep Dive</span>
+                  </div>
+                  <p className="mt-3 font-mono text-xs sm:text-sm font-light leading-relaxed text-[#E7EAEA] whitespace-pre-line">
+                    {architecture}
+                  </p>
                 </div>
-                <p className="mt-3 font-mono text-xs sm:text-sm font-light leading-relaxed text-[#E7EAEA] whitespace-pre-line">
-                  {problem}
-                </p>
-              </div>
-            ) : null}
+              ) : null}
 
-            {solution ? (
-              <div className="border-t border-[#22282B] pt-6 sm:pt-8">
-                <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#3FC7B0]">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0]" />
-                  <span>Solution</span>
+              {situation ? (
+                <div className={architecture ? "border-t border-[#22282B] pt-6 sm:pt-8" : ""}>
+                  <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#3FC7B0]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0]" />
+                    <span>Situation (Context & Problem)</span>
+                  </div>
+                  <p className="mt-3 font-mono text-xs sm:text-sm font-light leading-relaxed text-[#E7EAEA] whitespace-pre-line">
+                    {situation}
+                  </p>
                 </div>
-                <p className="mt-3 font-mono text-xs sm:text-sm font-light leading-relaxed text-[#E7EAEA] whitespace-pre-line">
-                  {solution}
-                </p>
-              </div>
-            ) : null}
+              ) : null}
 
-            {keyFeatures.length > 0 ? (
-              <div className="border-t border-[#22282B] pt-6 sm:pt-8">
-                <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#3FC7B0]">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0]" />
-                  <span>Key Features</span>
+              {task ? (
+                <div className={architecture || situation ? "border-t border-[#22282B] pt-6 sm:pt-8" : ""}>
+                  <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#3FC7B0]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0]" />
+                    <span>Task (Engineering Objective)</span>
+                  </div>
+                  <p className="mt-3 font-mono text-xs sm:text-sm font-light leading-relaxed text-[#E7EAEA] whitespace-pre-line">
+                    {task}
+                  </p>
                 </div>
-                <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {keyFeatures.map((feature, i) => (
-                    <div
-                      key={i}
-                      className="flex items-start gap-2.5 rounded-lg border border-[#22282B] bg-[#0E1113] p-3 transition-colors hover:border-[#3FC7B0]/40"
-                    >
-                      <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[#3FC7B0]" />
-                      <span className="font-mono text-xs font-light text-[#E7EAEA] leading-relaxed">
-                        {feature}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : null}
+              ) : null}
 
-            {challenge ? (
-              <div className="border-t border-[#22282B] pt-6 sm:pt-8">
-                <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#3FC7B0]">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0]" />
-                  <span>Challenge</span>
+              {action ? (
+                <div className={architecture || situation || task ? "border-t border-[#22282B] pt-6 sm:pt-8" : ""}>
+                  <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#3FC7B0]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0]" />
+                    <span>Action (Technical Implementation)</span>
+                  </div>
+                  <p className="mt-3 font-mono text-xs sm:text-sm font-light leading-relaxed text-[#E7EAEA] whitespace-pre-line">
+                    {action}
+                  </p>
                 </div>
-                <p className="mt-3 font-mono text-xs sm:text-sm font-light leading-relaxed text-[#E7EAEA] whitespace-pre-line">
-                  {challenge}
-                </p>
-              </div>
-            ) : null}
+              ) : null}
 
-            {outcome ? (
-              <div className="border-t border-[#22282B] pt-6 sm:pt-8">
-                <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#3FC7B0]">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0]" />
-                  <span>Outcome</span>
+              {result ? (
+                <div className={architecture || situation || task || action ? "border-t border-[#22282B] pt-6 sm:pt-8" : ""}>
+                  <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#3FC7B0]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0]" />
+                    <span>Result (Measurable Impact & Metrics)</span>
+                  </div>
+                  <p className="mt-3 font-mono text-xs sm:text-sm font-light leading-relaxed text-[#E7EAEA] whitespace-pre-line">
+                    {result}
+                  </p>
                 </div>
-                <p className="mt-3 font-mono text-xs sm:text-sm font-light leading-relaxed text-[#E7EAEA] whitespace-pre-line">
-                  {outcome}
-                </p>
-              </div>
-            ) : null}
-          </div>
+              ) : null}
+
+              {keyFeatures.length > 0 ? (
+                <div className={architecture || situation || task || action || result ? "border-t border-[#22282B] pt-6 sm:pt-8" : ""}>
+                  <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#3FC7B0]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0]" />
+                    <span>Key Features</span>
+                  </div>
+                  <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {keyFeatures.map((feature, i) => (
+                      <div
+                        key={i}
+                        className="flex items-start gap-2.5 rounded-lg border border-[#22282B] bg-[#0E1113] p-3 transition-colors hover:border-[#3FC7B0]/40"
+                      >
+                        <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[#3FC7B0]" />
+                        <span className="font-mono text-xs font-light text-[#E7EAEA] leading-relaxed">
+                          {feature}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
 
           <div className="mt-10 flex items-center justify-between border-t border-[#22282B] pt-6 font-mono text-xs">
             <Link

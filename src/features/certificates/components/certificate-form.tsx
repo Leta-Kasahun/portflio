@@ -29,7 +29,6 @@ export function CertificateForm({ certificate }: CertificateFormProps) {
   return (
     <form
       action={formAction}
-      encType="multipart/form-data"
       className="space-y-6"
     >
       {state?.error && (
