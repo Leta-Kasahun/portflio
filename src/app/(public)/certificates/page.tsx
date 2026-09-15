@@ -20,9 +20,6 @@ export default async function CertificatesPage() {
           <h1 className="font-serif text-3xl xs:text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-[#3FC7B0]">
             Licenses & Certifications
           </h1>
-          <p className="mt-2.5 max-w-2xl font-mono text-xs sm:text-sm font-light leading-relaxed tracking-wide text-[#8A9295]">
-            Verified industry credentials, cloud architecture specializations, and professional engineering licenses.
-          </p>
         </div>
 
         <div className="mt-8 sm:mt-12 grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-7">

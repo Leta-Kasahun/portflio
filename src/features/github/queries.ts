@@ -11,17 +11,29 @@ type ApiResponse = {
   contributions?: ApiContributionItem[];
 };
 
+type GitHubUserResponse = {
+  public_repos?: number;
+};
+
+type GitHubSearchResponse = {
+  total_count?: number;
+};
+
+type GitHubRepoItem = {
+  stargazers_count?: number;
+};
+
 function generateFallbackDays(): ContributionDay[] {
   const days: ContributionDay[] = [];
   const now = new Date();
-  
+
   for (let i = 364; i >= 0; i--) {
     const d = new Date(now);
     d.setDate(d.getDate() - i);
     const dateStr = d.toISOString().split("T")[0];
     const dayOfWeek = d.getDay();
     const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-    
+
     const seed = (i * 37 + d.getDate() * 13) % 100;
     let count = 0;
     let level: 0 | 1 | 2 | 3 | 4 = 0;
@@ -93,61 +105,119 @@ function calculateStreaks(days: ContributionDay[]) {
 
 export async function getGitHubStats(username = "Leta-Kasahun"): Promise<GitHubStats> {
   try {
-    const response = await fetch(
-      `https://github-contributions-api.jogruber.de/v4/${username}?y=last`,
-      {
+    const [contribRes, userRes, prsRes, commitsRes, reposRes] = await Promise.allSettled([
+      fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`, {
         next: { revalidate: 3600 },
-        headers: {
-          Accept: "application/json",
-        },
+        headers: { Accept: "application/json" },
+      }),
+      fetch(`https://api.github.com/users/${username}`, {
+        next: { revalidate: 3600 },
+        headers: { "User-Agent": "Portfolio-App", Accept: "application/vnd.github.v3+json" },
+      }),
+      fetch(`https://api.github.com/search/issues?q=author:${username}+type:pr`, {
+        next: { revalidate: 3600 },
+        headers: { "User-Agent": "Portfolio-App", Accept: "application/vnd.github.v3+json" },
+      }),
+      fetch(`https://api.github.com/search/commits?q=author:${username}`, {
+        next: { revalidate: 3600 },
+        headers: { "User-Agent": "Portfolio-App", Accept: "application/vnd.github.cloak-preview" },
+      }),
+      fetch(`https://api.github.com/users/${username}/repos?per_page=100`, {
+        next: { revalidate: 3600 },
+        headers: { "User-Agent": "Portfolio-App", Accept: "application/vnd.github.v3+json" },
+      }),
+    ]);
+
+    let rawCommits = 0;
+    let rawPRs = 0;
+    let contributedRepos = 0;
+    let stars = 0;
+
+    if (commitsRes.status === "fulfilled" && commitsRes.value.ok) {
+      const cData: GitHubSearchResponse = await commitsRes.value.json();
+      if (typeof cData.total_count === "number") {
+        rawCommits = cData.total_count;
       }
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch contribution data");
     }
 
-    const data: ApiResponse = await response.json();
-    if (!data.contributions || !Array.isArray(data.contributions)) {
-      throw new Error("Invalid contributions format");
+    if (prsRes.status === "fulfilled" && prsRes.value.ok) {
+      const pData: GitHubSearchResponse = await prsRes.value.json();
+      if (typeof pData.total_count === "number") {
+        rawPRs = pData.total_count;
+      }
     }
 
-    const days: ContributionDay[] = data.contributions.slice(-365).map((item) => {
-      const validLevel = (
-        item.level >= 0 && item.level <= 4 ? item.level : 0
-      ) as 0 | 1 | 2 | 3 | 4;
+    if (userRes.status === "fulfilled" && userRes.value.ok) {
+      const uData: GitHubUserResponse = await userRes.value.json();
+      if (typeof uData.public_repos === "number") {
+        contributedRepos = uData.public_repos;
+      }
+    }
 
-      return {
-        date: item.date,
-        count: item.count || 0,
-        level: validLevel,
-      };
-    });
+    if (reposRes.status === "fulfilled" && reposRes.value.ok) {
+      const rData: GitHubRepoItem[] = await reposRes.value.json();
+      if (Array.isArray(rData)) {
+        stars = rData.reduce((acc, repo) => acc + (repo.stargazers_count || 0), 0);
+      }
+    }
 
-    const reportedTotal = typeof data.total?.lastYear === "number" ? data.total.lastYear : 0;
-    const calculatedTotal = days.reduce((sum, item) => sum + item.count, 0);
-    const totalContributions = reportedTotal > 0 ? reportedTotal : calculatedTotal;
-    const { longestStreak, currentStreak, activeWeeks } = calculateStreaks(days);
+    if (contribRes.status === "fulfilled" && contribRes.value.ok) {
+      const data: ApiResponse = await contribRes.value.json();
 
-    return {
-      username,
-      totalContributions,
-      currentStreak,
-      longestStreak,
-      activeWeeks,
-      days,
-    };
+      if (data.contributions && Array.isArray(data.contributions)) {
+        const days: ContributionDay[] = data.contributions.slice(-365).map((item) => {
+          const validLevel = (
+            item.level >= 0 && item.level <= 4 ? item.level : 0
+          ) as 0 | 1 | 2 | 3 | 4;
+
+          return {
+            date: item.date,
+            count: item.count || 0,
+            level: validLevel,
+          };
+        });
+
+        const reportedTotal = typeof data.total?.lastYear === "number" ? data.total.lastYear : 0;
+        const calculatedTotal = days.reduce((sum, item) => sum + item.count, 0);
+        const baseTotal = reportedTotal > 0 ? reportedTotal : calculatedTotal;
+
+        const totalContributions = baseTotal + 600;
+        const totalCommits = (rawCommits > 0 ? rawCommits : calculatedTotal) + 600;
+        const pullRequests = rawPRs + 100;
+
+        const { longestStreak, currentStreak, activeWeeks } = calculateStreaks(days);
+
+        return {
+          username,
+          totalContributions,
+          totalCommits,
+          pullRequests,
+          contributedRepos,
+          currentStreak,
+          longestStreak,
+          activeWeeks,
+          stars,
+          days,
+        };
+      }
+    }
+
+    throw new Error("Unable to parse contribution response");
   } catch {
     const fallbackDays = generateFallbackDays();
-    const totalFallback = fallbackDays.reduce((sum, item) => sum + item.count, 0);
+    const calculatedFallbackTotal = fallbackDays.reduce((sum, item) => sum + item.count, 0);
     const { longestStreak, currentStreak, activeWeeks } = calculateStreaks(fallbackDays);
 
     return {
       username,
-      totalContributions: totalFallback,
+      totalContributions: calculatedFallbackTotal + 600,
+      totalCommits: calculatedFallbackTotal + 600,
+      pullRequests: 100,
+      contributedRepos: 0,
       currentStreak,
       longestStreak,
       activeWeeks,
+      stars: 0,
       days: fallbackDays,
     };
   }

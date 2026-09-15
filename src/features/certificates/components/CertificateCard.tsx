@@ -152,13 +152,6 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
                   className="w-full h-full"
                 />
 
-                <div className="absolute top-2.5 left-2.5 z-10 pointer-events-none">
-                  <span className="inline-flex items-center gap-1.5 rounded bg-[#0E1113]/90 border border-[#3FC7B0]/30 px-2.5 py-1 font-mono text-[9px] xs:text-[10px] font-bold text-[#3FC7B0] uppercase tracking-wider backdrop-blur-md shadow-md">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0] animate-pulse" />
-                    <span>Official Document</span>
-                  </span>
-                </div>
-
                 <div className="absolute inset-0 bg-[#0E1113]/70 backdrop-blur-[2px] opacity-0 transition-opacity duration-300 group-hover/preview:opacity-100 flex items-center justify-center z-20 p-4">
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-[#3FC7B0] bg-[#171B1D]/95 px-4 py-2 font-mono text-xs font-medium text-[#3FC7B0] shadow-2xl">
                     <span>View PDF</span>

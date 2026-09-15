@@ -83,9 +83,6 @@ export function GitHubContributionSection({
               <h2 className="font-serif text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-[#3FC7B0]">
                 GitHub Activity
               </h2>
-              <p className="mt-1.5 font-mono text-xs sm:text-sm font-light tracking-wide text-[#8A9295]">
-                Real-time commit telemetry & code contribution cadence.
-              </p>
             </div>
 
             <a
@@ -121,59 +118,183 @@ export function GitHubContributionSection({
           </div>
         </RevealOnScroll>
 
-        <div className="mt-6 sm:mt-8 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+        <div className="mt-6 sm:mt-8 grid grid-cols-2 xs:grid-cols-3 lg:grid-cols-6 gap-2.5 xs:gap-3 sm:gap-4">
           <RevealOnScroll direction="up" delay={0} duration={800}>
-            <div className="rounded-lg border border-[#22282B] bg-[#171B1D] p-3.5 sm:p-4 text-left shadow-lg h-full">
-              <span className="block font-mono text-[10px] xs:text-[11px] font-medium uppercase tracking-wider text-[#8A9295]">
-                Yearly Contributions
-              </span>
-              <div className="mt-1.5 flex items-baseline gap-1.5">
-                <span className="text-xl xs:text-2xl sm:text-3xl font-extrabold text-white">
+            <div className="rounded-tl-[16px] sm:rounded-tl-[24px] rounded-br-[16px] sm:rounded-br-[24px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3 xs:p-3.5 sm:p-4 text-left shadow-xl transition-all duration-300 hover:border-[#3FC7B0]/60 hover:-translate-y-1 group flex flex-col justify-between h-full min-w-0">
+              <div className="flex items-center justify-between gap-1.5 mb-2.5 sm:mb-3">
+                <span className="font-mono text-[9.5px] xs:text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-[#8A9295] truncate">
+                  Contributions
+                </span>
+                <div className="flex h-6 w-6 xs:h-7 xs:w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-tl-[6px] xs:rounded-tl-[8px] rounded-br-[6px] xs:rounded-br-[8px] rounded-tr-none rounded-bl-none border border-[#3FC7B0]/30 bg-[#3FC7B0]/10 text-[#3FC7B0] transition-transform duration-300 group-hover:scale-110">
+                  <svg
+                    className="h-3 w-3 xs:h-3.5 xs:w-3.5 sm:h-4 sm:w-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                  </svg>
+                </div>
+              </div>
+              <div className="flex items-baseline gap-1 xs:gap-1.5 flex-wrap">
+                <span className="text-lg xs:text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
                   {stats.totalContributions.toLocaleString()}
                 </span>
-                <span className="font-mono text-[10px] text-[#3FC7B0]">events</span>
+                <span className="font-mono text-[9px] xs:text-[10px] text-[#3FC7B0] font-medium">events</span>
               </div>
             </div>
           </RevealOnScroll>
 
-          <RevealOnScroll direction="up" delay={80} duration={800}>
-            <div className="rounded-lg border border-[#22282B] bg-[#171B1D] p-3.5 sm:p-4 text-left shadow-lg h-full">
-              <span className="block font-mono text-[10px] xs:text-[11px] font-medium uppercase tracking-wider text-[#8A9295]">
-                Current Streak
-              </span>
-              <div className="mt-1.5 flex items-baseline gap-1.5">
-                <span className="text-xl xs:text-2xl sm:text-3xl font-extrabold text-[#3FC7B0]">
+          <RevealOnScroll direction="up" delay={60} duration={800}>
+            <div className="rounded-tl-[16px] sm:rounded-tl-[24px] rounded-br-[16px] sm:rounded-br-[24px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3 xs:p-3.5 sm:p-4 text-left shadow-xl transition-all duration-300 hover:border-[#3FC7B0]/60 hover:-translate-y-1 group flex flex-col justify-between h-full min-w-0">
+              <div className="flex items-center justify-between gap-1.5 mb-2.5 sm:mb-3">
+                <span className="font-mono text-[9.5px] xs:text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-[#8A9295] truncate">
+                  Pull Requests
+                </span>
+                <div className="flex h-6 w-6 xs:h-7 xs:w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-tl-[6px] xs:rounded-tl-[8px] rounded-br-[6px] xs:rounded-br-[8px] rounded-tr-none rounded-bl-none border border-[#3FC7B0]/30 bg-[#3FC7B0]/10 text-[#3FC7B0] transition-transform duration-300 group-hover:scale-110">
+                  <svg
+                    className="h-3 w-3 xs:h-3.5 xs:w-3.5 sm:h-4 sm:w-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="18" cy="18" r="3" />
+                    <circle cx="6" cy="6" r="3" />
+                    <path d="M13 6h3a2 2 0 0 1 2 2v7" />
+                    <line x1="6" y1="9" x2="6" y2="21" />
+                  </svg>
+                </div>
+              </div>
+              <div className="flex items-baseline gap-1 xs:gap-1.5 flex-wrap">
+                <span className="text-lg xs:text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
+                  {stats.pullRequests.toLocaleString()}
+                </span>
+                <span className="font-mono text-[9px] xs:text-[10px] text-[#3FC7B0] font-medium">prs</span>
+              </div>
+            </div>
+          </RevealOnScroll>
+
+          <RevealOnScroll direction="up" delay={120} duration={800}>
+            <div className="rounded-tl-[16px] sm:rounded-tl-[24px] rounded-br-[16px] sm:rounded-br-[24px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3 xs:p-3.5 sm:p-4 text-left shadow-xl transition-all duration-300 hover:border-[#3FC7B0]/60 hover:-translate-y-1 group flex flex-col justify-between h-full min-w-0">
+              <div className="flex items-center justify-between gap-1.5 mb-2.5 sm:mb-3">
+                <span className="font-mono text-[9.5px] xs:text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-[#8A9295] truncate">
+                  Repositories
+                </span>
+                <div className="flex h-6 w-6 xs:h-7 xs:w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-tl-[6px] xs:rounded-tl-[8px] rounded-br-[6px] xs:rounded-br-[8px] rounded-tr-none rounded-bl-none border border-[#3FC7B0]/30 bg-[#3FC7B0]/10 text-[#3FC7B0] transition-transform duration-300 group-hover:scale-110">
+                  <svg
+                    className="h-3 w-3 xs:h-3.5 xs:w-3.5 sm:h-4 sm:w-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                  </svg>
+                </div>
+              </div>
+              <div className="flex items-baseline gap-1 xs:gap-1.5 flex-wrap">
+                <span className="text-lg xs:text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
+                  {stats.contributedRepos.toLocaleString()}
+                </span>
+                <span className="font-mono text-[9px] xs:text-[10px] text-[#3FC7B0] font-medium">repos</span>
+              </div>
+            </div>
+          </RevealOnScroll>
+
+          <RevealOnScroll direction="up" delay={180} duration={800}>
+            <div className="rounded-tl-[16px] sm:rounded-tl-[24px] rounded-br-[16px] sm:rounded-br-[24px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3 xs:p-3.5 sm:p-4 text-left shadow-xl transition-all duration-300 hover:border-[#3FC7B0]/60 hover:-translate-y-1 group flex flex-col justify-between h-full min-w-0">
+              <div className="flex items-center justify-between gap-1.5 mb-2.5 sm:mb-3">
+                <span className="font-mono text-[9.5px] xs:text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-[#8A9295] truncate">
+                  Current Streak
+                </span>
+                <div className="flex h-6 w-6 xs:h-7 xs:w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-tl-[6px] xs:rounded-tl-[8px] rounded-br-[6px] xs:rounded-br-[8px] rounded-tr-none rounded-bl-none border border-[#3FC7B0]/30 bg-[#3FC7B0]/10 text-[#3FC7B0] transition-transform duration-300 group-hover:scale-110">
+                  <svg
+                    className="h-3 w-3 xs:h-3.5 xs:w-3.5 sm:h-4 sm:w-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+                  </svg>
+                </div>
+              </div>
+              <div className="flex items-baseline gap-1 xs:gap-1.5 flex-wrap">
+                <span className="text-lg xs:text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
                   {stats.currentStreak}
                 </span>
-                <span className="font-mono text-[10px] text-[#8A9295]">days</span>
-              </div>
-            </div>
-          </RevealOnScroll>
-
-          <RevealOnScroll direction="up" delay={160} duration={800}>
-            <div className="rounded-lg border border-[#22282B] bg-[#171B1D] p-3.5 sm:p-4 text-left shadow-lg h-full">
-              <span className="block font-mono text-[10px] xs:text-[11px] font-medium uppercase tracking-wider text-[#8A9295]">
-                Longest Streak
-              </span>
-              <div className="mt-1.5 flex items-baseline gap-1.5">
-                <span className="text-xl xs:text-2xl sm:text-3xl font-extrabold text-white">
-                  {stats.longestStreak}
-                </span>
-                <span className="font-mono text-[10px] text-[#8A9295]">days</span>
+                <span className="font-mono text-[9px] xs:text-[10px] text-[#3FC7B0] font-medium">days</span>
               </div>
             </div>
           </RevealOnScroll>
 
           <RevealOnScroll direction="up" delay={240} duration={800}>
-            <div className="rounded-lg border border-[#22282B] bg-[#171B1D] p-3.5 sm:p-4 text-left shadow-lg h-full">
-              <span className="block font-mono text-[10px] xs:text-[11px] font-medium uppercase tracking-wider text-[#8A9295]">
-                Active Weeks
-              </span>
-              <div className="mt-1.5 flex items-baseline gap-1.5">
-                <span className="text-xl xs:text-2xl sm:text-3xl font-extrabold text-white">
-                  {stats.activeWeeks}
+            <div className="rounded-tl-[16px] sm:rounded-tl-[24px] rounded-br-[16px] sm:rounded-br-[24px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3 xs:p-3.5 sm:p-4 text-left shadow-xl transition-all duration-300 hover:border-[#3FC7B0]/60 hover:-translate-y-1 group flex flex-col justify-between h-full min-w-0">
+              <div className="flex items-center justify-between gap-1.5 mb-2.5 sm:mb-3">
+                <span className="font-mono text-[9.5px] xs:text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-[#8A9295] truncate">
+                  Longest Streak
                 </span>
-                <span className="font-mono text-[10px] text-[#8A9295]">/ 52 wks</span>
+                <div className="flex h-6 w-6 xs:h-7 xs:w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-tl-[6px] xs:rounded-tl-[8px] rounded-br-[6px] xs:rounded-br-[8px] rounded-tr-none rounded-bl-none border border-[#3FC7B0]/30 bg-[#3FC7B0]/10 text-[#3FC7B0] transition-transform duration-300 group-hover:scale-110">
+                  <svg
+                    className="h-3 w-3 xs:h-3.5 xs:w-3.5 sm:h-4 sm:w-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                    <path d="M4 22h16" />
+                    <path d="M10 14.66V17c0 .55-.45 1-1 1H8v4h8v-4h-1c-.55 0-1-.45-1-1v-2.34" />
+                    <path d="M18 2H6v7a6 6 0 0 0 12 0V2z" />
+                  </svg>
+                </div>
+              </div>
+              <div className="flex items-baseline gap-1 xs:gap-1.5 flex-wrap">
+                <span className="text-lg xs:text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
+                  {stats.longestStreak}
+                </span>
+                <span className="font-mono text-[9px] xs:text-[10px] text-[#3FC7B0] font-medium">days</span>
+              </div>
+            </div>
+          </RevealOnScroll>
+
+          <RevealOnScroll direction="up" delay={300} duration={800}>
+            <div className="rounded-tl-[16px] sm:rounded-tl-[24px] rounded-br-[16px] sm:rounded-br-[24px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3 xs:p-3.5 sm:p-4 text-left shadow-xl transition-all duration-300 hover:border-[#3FC7B0]/60 hover:-translate-y-1 group flex flex-col justify-between h-full min-w-0">
+              <div className="flex items-center justify-between gap-1.5 mb-2.5 sm:mb-3">
+                <span className="font-mono text-[9.5px] xs:text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-[#8A9295] truncate">
+                  Stars Earned
+                </span>
+                <div className="flex h-6 w-6 xs:h-7 xs:w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-tl-[6px] xs:rounded-tl-[8px] rounded-br-[6px] xs:rounded-br-[8px] rounded-tr-none rounded-bl-none border border-[#3FC7B0]/30 bg-[#3FC7B0]/10 text-[#3FC7B0] transition-transform duration-300 group-hover:scale-110">
+                  <svg
+                    className="h-3 w-3 xs:h-3.5 xs:w-3.5 sm:h-4 sm:w-4"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </div>
+              </div>
+              <div className="flex items-baseline gap-1 xs:gap-1.5 flex-wrap">
+                <span className="text-lg xs:text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
+                  {stats.stars.toLocaleString()}
+                </span>
+                <span className="font-mono text-[9px] xs:text-[10px] text-[#3FC7B0] font-medium">stars</span>
               </div>
             </div>
           </RevealOnScroll>
@@ -183,7 +304,6 @@ export function GitHubContributionSection({
           <div className="mt-6 sm:mt-8 rounded-tl-[20px] sm:rounded-tl-[32px] rounded-br-[20px] sm:rounded-br-[32px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-4 sm:p-6 shadow-2xl">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#22282B] pb-3 mb-4">
             <div className="flex items-center gap-2">
-              <span className="inline-block h-2 w-2 rounded-full bg-[#3FC7B0] animate-pulse" />
               <span className="font-mono text-xs font-semibold text-[#E7EAEA] tracking-wide">
                 Contribution Heatmap
               </span>

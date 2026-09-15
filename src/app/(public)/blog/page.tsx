@@ -20,9 +20,6 @@ export default async function BlogPage() {
           <h1 className="font-serif text-3xl xs:text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-[#3FC7B0]">
             Blogs & Insights
           </h1>
-          <p className="mt-2.5 max-w-2xl font-mono text-xs sm:text-sm font-light leading-relaxed tracking-wide text-[#8A9295]">
-            Engineering write-ups, architecture breakdowns, database optimization notes, and production lessons learned.
-          </p>
         </div>
 
         <BlogList posts={posts} />
