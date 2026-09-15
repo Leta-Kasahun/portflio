@@ -66,10 +66,9 @@ export function HeroSection({ profile, socialLinks }: HeroSectionProps) {
               {profile.name}
             </h1>
 
-            <h2 className="mt-1.5 text-lg font-bold tracking-tight text-white xs:text-2xl sm:mt-3 sm:text-3xl lg:text-4xl">
+            <h3 className="text-base xs:text-lg sm:text-xl font-bold tracking-tight text-white">
               {profile.title}
-            </h2>
-
+            </h3>
             <p className="mt-3.5 max-w-xl font-mono text-xs font-light leading-relaxed tracking-wide text-[#8A9295] sm:mt-5 sm:text-sm">
               {profile.bio}
             </p>

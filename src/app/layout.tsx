@@ -28,24 +28,24 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://letakasahun.vercel.
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Leta Kasahun | Software Engineer & Full-Stack Developer",
+    default: "Leta Kasahun | Full-Stack Developer & Software Engineering Student",
     template: "%s | Leta Kasahun",
   },
   description:
-    "Software Engineering student and Full-Stack Developer skilled in Python, JavaScript, backend APIs, Docker, Kubernetes, and AI-driven web applications.",
+    "Leta Kasahun is a Software Engineering student at Debre Birhan University and a Full-Stack Developer based in Addis Ababa, Ethiopia, passionate about scalable software, DevOps, and Artificial Intelligence.",
   keywords: [
     "Leta Kasahun",
-    "Software Engineer",
     "Full-Stack Developer",
-    "Python",
-    "JavaScript",
-    "TypeScript",
-    "React",
-    "Next.js",
-    "Docker",
-    "Kubernetes",
-    "AI Engineering",
-    "REST APIs",
+    "Software Engineering Student",
+    "Software Engineer",
+    "Backend Developer",
+    "Web Developer",
+    "DevOps",
+    "Artificial Intelligence",
+    "Addis Ababa",
+    "Debre Birhan",
+    "Debre Birhan University",
+    "Ethiopia",
   ],
   authors: [{ name: "Leta Kasahun", url: siteUrl }],
   creator: "Leta Kasahun",
@@ -53,28 +53,30 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  category: "technology",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    title: "Leta Kasahun | Software Engineer & Full-Stack Developer",
+    title: "Leta Kasahun | Full-Stack Developer & Software Engineering Student",
     description:
-      "Software Engineering student and Full-Stack Developer skilled in Python, JavaScript, backend APIs, Docker, Kubernetes, and AI-driven web applications.",
+      "Leta Kasahun is a Software Engineering student at Debre Birhan University and a Full-Stack Developer based in Addis Ababa, Ethiopia, passionate about scalable software, DevOps, and Artificial Intelligence.",
     siteName: "Leta Kasahun Portfolio",
     images: [
       {
         url: "/images/hero.JPG",
         width: 1200,
         height: 630,
-        alt: "Leta Kasahun - Software Engineer & Full-Stack Developer",
+        alt: "Leta Kasahun - Full-Stack Developer & Software Engineering Student",
+        type: "image/jpeg",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Leta Kasahun | Software Engineer & Full-Stack Developer",
+    title: "Leta Kasahun | Full-Stack Developer & Software Engineering Student",
     description:
-      "Software Engineering student and Full-Stack Developer skilled in Python, JavaScript, backend APIs, Docker, Kubernetes, and AI-driven web applications.",
+      "Leta Kasahun is a Software Engineering student at Debre Birhan University and a Full-Stack Developer based in Addis Ababa, Ethiopia, passionate about scalable software, DevOps, and Artificial Intelligence.",
     images: ["/images/hero.JPG"],
     creator: "@letakasahun",
   },
@@ -92,7 +94,12 @@ export const metadata: Metadata = {
   verification: {
     google:
       process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
-      "googlee101f3b8908da623",
+      "_zlsFf-2bPmzKSdCoAMjb4MZ96xpUjZWPyqkFc7IgWI",
+    other: {
+      "msvalidate.01":
+        process.env.NEXT_PUBLIC_BING_VERIFICATION ||
+        "90D8A26E82FA8A2826696C74A63BA2D5",
+    },
   },
 };
 
@@ -103,22 +110,48 @@ const jsonLd = {
       "@type": "Person",
       "@id": `${siteUrl}/#person`,
       name: "Leta Kasahun",
-      jobTitle: "Software Engineer & Full-Stack Developer",
+      jobTitle: "Full-Stack Developer",
       url: siteUrl,
       image: `${siteUrl}/images/hero.JPG`,
       sameAs: [
         "https://github.com/Leta-Kasahun",
-        "https://linkedin.com/in/lkasahun",
+        "https://linkedin.com/in/letakasahun",
         "https://x.com/letakasahun",
       ],
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Addis Ababa",
+        addressCountry: "Ethiopia",
+      },
+      alumniOf: {
+        "@type": "EducationalOrganization",
+        name: "Debre Birhan University",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Debre Birhan",
+          addressCountry: "Ethiopia",
+        },
+      },
+      knowsAbout: [
+        "Full-Stack Development",
+        "Backend Development",
+        "DevOps",
+        "Artificial Intelligence",
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "RESTful APIs",
+        "Docker",
+      ],
       description:
-        "Software Engineering student and Full-Stack Developer skilled in Python, JavaScript, backend APIs, Docker, Kubernetes, and AI-driven web applications.",
+        "Leta Kasahun is a Software Engineering student at Debre Birhan University and a Full-Stack Developer based in Addis Ababa, Ethiopia, passionate about scalable software, DevOps, and Artificial Intelligence.",
     },
     {
       "@type": "WebSite",
       "@id": `${siteUrl}/#website`,
       url: siteUrl,
       name: "Leta Kasahun Portfolio",
+      inLanguage: "en-US",
       publisher: {
         "@id": `${siteUrl}/#person`,
       },
