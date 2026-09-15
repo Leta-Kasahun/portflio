@@ -98,7 +98,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 Written by Leta Kasahun
               </span>
               <span className="block font-mono text-[11px] text-[#8A9295] mt-0.5">
-                Senior Full-Stack &amp; Distributed Systems Engineer
+                Full-Stack Developer &amp; Software Engineering Student
               </span>
             </div>
 
