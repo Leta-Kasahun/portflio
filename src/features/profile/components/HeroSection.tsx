@@ -7,68 +7,56 @@ type HeroSectionProps = {
   socialLinks: SocialLink[];
 };
 
-function getSocialIcon(platform: string) {
-  const p = platform.toLowerCase();
-  if (p.includes("github")) {
-    return (
-      <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
-        <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-      </svg>
-    );
-  }
-  if (p.includes("linkedin")) {
-    return (
-      <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.45a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2z" />
-      </svg>
-    );
-  }
-  if (p.includes("twitter") || p.includes("x")) {
-    return (
-      <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-      </svg>
-    );
-  }
-  if (p.includes("mail") || p.includes("email")) {
-    return (
-      <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect width="20" height="16" x="2" y="4" rx="2" />
-        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-      </svg>
-    );
-  }
-  return (
-    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-      <path d="M2 12h20" />
-    </svg>
-  );
-}
-
 export function HeroSection({ profile, socialLinks }: HeroSectionProps) {
   const linksToDisplay = socialLinks || [];
 
   return (
-    <section className="relative flex min-h-[92vh] items-center overflow-hidden bg-[#0E1113] px-3 xs:px-4 sm:px-6 lg:px-8 pt-20 pb-12 sm:pt-24 sm:pb-18 lg:py-24">
-      <div className="relative z-10 mx-auto w-full max-w-7xl">
-        <div className="grid grid-cols-1 items-center gap-8 sm:gap-12 lg:grid-cols-12 lg:gap-8 xl:gap-12">
+    <section className="relative w-full overflow-hidden bg-[#0E1113] pt-20 pb-12 sm:pt-24 sm:pb-16 lg:pt-28 lg:pb-20">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden select-none z-0" aria-hidden="true">
+        <div className="absolute top-0 right-1/4 w-[600px] h-[450px] rounded-full bg-[#3FC7B0]/8 blur-[140px]" />
+        <div className="absolute top-1/3 left-0 w-[450px] h-[350px] rounded-full bg-[#3FC7B0]/5 blur-[120px]" />
+
+        <svg
+          viewBox="0 0 1440 700"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          className="absolute inset-0 w-full h-full"
+        >
+          <path
+            d="M 850 0 C 880 40 930 60 980 40 C 1040 10 1100 50 1120 100 C 1170 80 1230 110 1240 160 C 1300 160 1350 200 1370 260 C 1410 270 1450 310 1460 360 L 1460 0 Z"
+            fill="#12181B"
+          />
+          <path
+            d="M -60 180 C 20 120 100 130 150 170 C 210 110 320 120 370 180 C 430 130 530 140 580 200 C 650 150 770 160 830 220 C 900 170 1020 180 1080 240 C 1160 190 1280 210 1340 270 C 1400 240 1470 270 1520 320 L 1520 750 L -60 750 Z"
+            fill="#151E22"
+          />
+          <path
+            d="M -60 320 C 60 250 180 260 260 320 C 360 260 500 270 590 330 C 700 270 860 280 960 350 C 1080 290 1240 310 1340 380 C 1420 360 1490 390 1540 440 L 1540 750 L -60 750 Z"
+            fill="#182328"
+          />
+          <path
+            d="M -60 460 C 120 400 280 410 400 470 C 560 410 740 430 880 490 C 1040 430 1240 450 1380 520 C 1450 510 1510 530 1540 560 L 1540 750 L -60 750 Z"
+            fill="#0E1113"
+          />
+        </svg>
+      </div>
+
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-8 xl:gap-12">
           <div
             className={`flex flex-col items-start text-left ${profile.imageUrl ? "lg:col-span-7" : "lg:col-span-12 max-w-3xl"
               }`}
           >
-            <span className="text-xl font-extrabold tracking-tight text-white xs:text-3xl sm:text-4xl lg:text-5xl">
-              Hi, I&apos;m
-            </span>
-
-            <h1 className="mt-1 font-serif text-4xl font-normal tracking-tight text-[#3FC7B0] xs:text-6xl sm:text-7xl md:text-8xl lg:text-9xl">
-              {profile.name}
+            <h1 className="font-serif text-4xl font-normal tracking-tight text-white xs:text-6xl sm:text-7xl md:text-8xl lg:text-9xl leading-[1.06]">
+              Hi, I&apos;m{" "}
+              <span className="text-[#3FC7B0]">{profile.name}</span>
             </h1>
 
-            <h3 className="text-base xs:text-lg sm:text-xl font-bold tracking-tight text-white">
+            <h2 className="mt-3 text-base xs:text-lg sm:text-xl font-bold tracking-tight text-white">
               {profile.title}
-            </h3>
+            </h2>
+
             <p className="mt-3.5 max-w-xl font-mono text-xs font-light leading-relaxed tracking-wide text-[#8A9295] sm:mt-5 sm:text-sm">
               {profile.bio}
             </p>
@@ -106,9 +94,6 @@ export function HeroSection({ profile, socialLinks }: HeroSectionProps) {
                     rel="noopener noreferrer"
                     className="group inline-flex items-center gap-1.5 xs:gap-2 rounded-lg border border-[#22282B] bg-[#171B1D]/40 px-2.5 py-1.5 sm:px-3.5 sm:py-2 font-mono text-[11px] xs:text-xs sm:text-[13px] font-light tracking-wider text-[#E7EAEA] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#3FC7B0]/60 hover:bg-[#3FC7B0]/10 hover:text-[#3FC7B0] hover:shadow-[0_0_15px_rgba(63,199,176,0.18)] active:translate-y-0 shrink-0"
                   >
-                    <span className="text-[#8A9295] transition-colors duration-300 group-hover:text-[#3FC7B0]">
-                      {getSocialIcon(link.platform)}
-                    </span>
                     <span>{link.platform}</span>
                     <svg
                       viewBox="0 0 12 12"
@@ -143,3 +128,4 @@ export function HeroSection({ profile, socialLinks }: HeroSectionProps) {
     </section>
   );
 }
+
