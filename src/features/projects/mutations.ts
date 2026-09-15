@@ -61,55 +61,72 @@ export async function createProjectAction(
         .filter(Boolean)
     : [];
 
-  const hasCaseStudy =
-    category ||
-    role ||
-    problem ||
-    solution ||
-    challenge ||
-    outcome ||
-    keyFeatures.length > 0;
-
-  const caseStudyData = hasCaseStudy
-    ? {
-        category: category || null,
-        role: role || null,
-        problem: problem || null,
-        solution: solution || null,
-        challenge: challenge || null,
-        outcome: outcome || null,
-        keyFeatures,
-        situation: problem || null,
-        task: challenge || null,
-        action: solution || null,
-        result: outcome || null,
+    const architecturePattern = String(formData.get("architecturePattern") || "").trim() || null;
+    const rawArchNodes = formData.get("architectureNodes");
+    let architectureNodes = null;
+    if (rawArchNodes && typeof rawArchNodes === "string") {
+      try {
+        architectureNodes = JSON.parse(rawArchNodes);
+      } catch {
+        architectureNodes = null;
       }
-    : undefined;
+    }
 
-  const rawData = {
-    title,
-    slug,
-    description: String(formData.get("description") || "").trim(),
-    content: String(formData.get("content") || "").trim() || null,
-    technologies,
-    githubUrl: String(formData.get("githubUrl") || "").trim() || null,
-    liveUrl: String(formData.get("liveUrl") || "").trim() || null,
-    coverImage: coverImageUrl || String(formData.get("coverImage") || "").trim() || null,
-    featured: formData.get("featured") === "on" || formData.get("featured") === "true",
-    published: formData.get("published") === "on" || formData.get("published") === "true",
-    order: Number(formData.get("order")) || 0,
-    category: category || null,
-    role: role || null,
-    problem: problem || null,
-    solution: solution || null,
-    challenge: challenge || null,
-    outcome: outcome || null,
-    keyFeatures,
-    situation: problem || null,
-    task: challenge || null,
-    action: solution || null,
-    result: outcome || null,
-  };
+    const hasCaseStudy =
+      category ||
+      role ||
+      problem ||
+      solution ||
+      challenge ||
+      outcome ||
+      architecturePattern ||
+      (Array.isArray(architectureNodes) && architectureNodes.length > 0) ||
+      keyFeatures.length > 0;
+
+    const caseStudyData = hasCaseStudy
+      ? {
+          category: category || null,
+          role: role || null,
+          problem: problem || null,
+          solution: solution || null,
+          challenge: challenge || null,
+          outcome: outcome || null,
+          keyFeatures,
+          situation: problem || null,
+          task: challenge || null,
+          action: solution || null,
+          result: outcome || null,
+          architecturePattern: architecturePattern || null,
+          architectureNodes: architectureNodes || null,
+        }
+      : undefined;
+
+    const rawData = {
+      title,
+      slug,
+      description: String(formData.get("description") || "").trim(),
+      content: String(formData.get("content") || "").trim() || null,
+      technologies,
+      githubUrl: String(formData.get("githubUrl") || "").trim() || null,
+      liveUrl: String(formData.get("liveUrl") || "").trim() || null,
+      coverImage: coverImageUrl || String(formData.get("coverImage") || "").trim() || null,
+      featured: formData.get("featured") === "on" || formData.get("featured") === "true",
+      published: formData.get("published") === "on" || formData.get("published") === "true",
+      order: Number(formData.get("order")) || 0,
+      category: category || null,
+      role: role || null,
+      problem: problem || null,
+      solution: solution || null,
+      challenge: challenge || null,
+      outcome: outcome || null,
+      keyFeatures,
+      situation: problem || null,
+      task: challenge || null,
+      action: solution || null,
+      result: outcome || null,
+      architecturePattern: architecturePattern || null,
+      architectureNodes: architectureNodes || null,
+    };
 
   const validation = projectSchema.safeParse(rawData);
   if (!validation.success) {
@@ -199,6 +216,17 @@ export async function updateProjectAction(
         .filter(Boolean)
     : [];
 
+  const architecturePattern = String(formData.get("architecturePattern") || "").trim() || null;
+  const rawArchNodes = formData.get("architectureNodes");
+  let architectureNodes = null;
+  if (rawArchNodes && typeof rawArchNodes === "string") {
+    try {
+      architectureNodes = JSON.parse(rawArchNodes);
+    } catch {
+      architectureNodes = null;
+    }
+  }
+
   const hasCaseStudy =
     category ||
     role ||
@@ -206,6 +234,8 @@ export async function updateProjectAction(
     solution ||
     challenge ||
     outcome ||
+    architecturePattern ||
+    (Array.isArray(architectureNodes) && architectureNodes.length > 0) ||
     keyFeatures.length > 0;
 
   const caseStudyData = hasCaseStudy
@@ -221,6 +251,8 @@ export async function updateProjectAction(
         task: challenge || null,
         action: solution || null,
         result: outcome || null,
+        architecturePattern: architecturePattern || null,
+        architectureNodes: architectureNodes || null,
       }
     : undefined;
 
@@ -247,6 +279,8 @@ export async function updateProjectAction(
     task: challenge || null,
     action: solution || null,
     result: outcome || null,
+    architecturePattern: architecturePattern || null,
+    architectureNodes: architectureNodes || null,
   };
 
   const validation = projectSchema.safeParse(rawData);

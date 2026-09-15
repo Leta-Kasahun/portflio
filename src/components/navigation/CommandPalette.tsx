@@ -391,7 +391,18 @@ export function CommandPalette({
                   </svg>
                 </button>
               )}
-              <kbd className="hidden sm:inline-flex rounded border border-[#22282B] bg-[#171B1D] px-1.5 py-0.5 font-mono text-[10px] text-[#8A9295]">
+              <button
+                type="button"
+                onClick={closePalette}
+                aria-label="Close command palette"
+                className="flex sm:hidden shrink-0 items-center justify-center rounded-md border border-[#22282B] bg-[#171B1D] px-2 py-1 font-mono text-[10px] text-[#8A9295] hover:text-white hover:border-[#3FC7B0] transition-colors"
+              >
+                ✕ Close
+              </button>
+              <kbd
+                onClick={closePalette}
+                className="hidden sm:inline-flex cursor-pointer rounded border border-[#22282B] bg-[#171B1D] px-1.5 py-0.5 font-mono text-[10px] text-[#8A9295] hover:text-white hover:border-[#3FC7B0] transition-colors"
+              >
                 ESC
               </kbd>
             </div>
@@ -452,7 +463,7 @@ export function CommandPalette({
             </div>
 
             <div className="flex items-center justify-between border-t border-[#22282B]/70 bg-[#0E1113]/60 px-4 py-2 font-mono text-[10px] text-[#8A9295] backdrop-blur-md">
-              <div className="flex items-center gap-3">
+              <div className="hidden sm:flex items-center gap-3">
                 <span>
                   <strong className="text-[#E7EAEA]">↑↓</strong> Navigate
                 </span>
@@ -460,8 +471,26 @@ export function CommandPalette({
                   <strong className="text-[#E7EAEA]">↵</strong> Select
                 </span>
               </div>
-              <div>
-                <strong className="text-[#E7EAEA]">Esc</strong> to exit
+              <div className="sm:hidden text-[10px] text-[#8A9295]">
+                Tap item to select
+              </div>
+              <div className="hidden sm:block">
+                <button
+                  type="button"
+                  onClick={closePalette}
+                  className="cursor-pointer text-[#8A9295] hover:text-white transition-colors"
+                >
+                  <strong className="text-[#E7EAEA]">Esc</strong> to exit
+                </button>
+              </div>
+              <div className="sm:hidden">
+                <button
+                  type="button"
+                  onClick={closePalette}
+                  className="rounded border border-[#22282B] bg-[#171B1D] px-2.5 py-1 font-mono text-[10px] font-medium text-[#3FC7B0] active:scale-95 transition-transform"
+                >
+                  Done ✕
+                </button>
               </div>
             </div>
           </div>

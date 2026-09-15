@@ -4,6 +4,10 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getProjectBySlug } from "@/features/projects/queries";
 import { Container } from "@/components/layout/Container";
+import {
+  ProjectArchitectureFlow,
+  ArchitectureNode,
+} from "@/features/projects/components/ProjectArchitectureFlow";
 
 export const dynamic = "force-dynamic";
 
@@ -43,6 +47,10 @@ export default async function ProjectCaseStudyPage({ params }: Props) {
   const category = (caseStudy?.category as string) || null;
   const role = (caseStudy?.role as string) || null;
   const architecture = project.content || null;
+  const architecturePattern = (caseStudy?.architecturePattern as string) || null;
+  const architectureNodes = Array.isArray(caseStudy?.architectureNodes)
+    ? (caseStudy.architectureNodes as ArchitectureNode[])
+    : null;
   const situation =
     (caseStudy?.situation as string) ||
     (caseStudy?.problem as string) ||
@@ -70,8 +78,15 @@ export default async function ProjectCaseStudyPage({ params }: Props) {
       .filter(Boolean);
   }
 
-  const hasCaseStudyContent = Boolean(
+  const hasArchitecture = Boolean(
     architecture ||
+      architecturePattern ||
+      (architectureNodes && architectureNodes.length > 0) ||
+      project.technologies.length > 0
+  );
+
+  const hasCaseStudyContent = Boolean(
+    hasArchitecture ||
       situation ||
       task ||
       action ||
@@ -191,20 +206,30 @@ export default async function ProjectCaseStudyPage({ params }: Props) {
 
           {hasCaseStudyContent ? (
             <div className="mt-6 sm:mt-8 rounded-tl-[20px] sm:rounded-tl-[36px] rounded-br-[20px] sm:rounded-br-[36px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3.5 xs:p-6 sm:p-8 md:p-10 shadow-2xl space-y-6 sm:space-y-8">
-              {architecture ? (
+              {hasArchitecture ? (
                 <div>
                   <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#3FC7B0]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0]" />
                     <span>Architecture & Deep Dive</span>
                   </div>
-                  <p className="mt-3 font-mono text-xs sm:text-sm font-light leading-relaxed text-[#E7EAEA] whitespace-pre-line">
-                    {architecture}
-                  </p>
+                  {architecture ? (
+                    <p className="mt-3 font-mono text-xs sm:text-sm font-light leading-relaxed text-[#E7EAEA] whitespace-pre-line">
+                      {architecture}
+                    </p>
+                  ) : null}
+                  <ProjectArchitectureFlow
+                    title={project.title}
+                    technologies={project.technologies}
+                    category={category}
+                    role={role}
+                    architecturePattern={architecturePattern}
+                    architectureNodes={architectureNodes}
+                  />
                 </div>
               ) : null}
 
               {situation ? (
-                <div className={architecture ? "border-t border-[#22282B] pt-6 sm:pt-8" : ""}>
+                <div className={hasArchitecture ? "border-t border-[#22282B] pt-6 sm:pt-8" : ""}>
                   <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#3FC7B0]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0]" />
                     <span>Situation (Context & Problem)</span>
@@ -216,7 +241,7 @@ export default async function ProjectCaseStudyPage({ params }: Props) {
               ) : null}
 
               {task ? (
-                <div className={architecture || situation ? "border-t border-[#22282B] pt-6 sm:pt-8" : ""}>
+                <div className={hasArchitecture || situation ? "border-t border-[#22282B] pt-6 sm:pt-8" : ""}>
                   <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#3FC7B0]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0]" />
                     <span>Task (Engineering Objective)</span>
@@ -228,7 +253,7 @@ export default async function ProjectCaseStudyPage({ params }: Props) {
               ) : null}
 
               {action ? (
-                <div className={architecture || situation || task ? "border-t border-[#22282B] pt-6 sm:pt-8" : ""}>
+                <div className={hasArchitecture || situation || task ? "border-t border-[#22282B] pt-6 sm:pt-8" : ""}>
                   <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#3FC7B0]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0]" />
                     <span>Action (Technical Implementation)</span>
@@ -240,7 +265,7 @@ export default async function ProjectCaseStudyPage({ params }: Props) {
               ) : null}
 
               {result ? (
-                <div className={architecture || situation || task || action ? "border-t border-[#22282B] pt-6 sm:pt-8" : ""}>
+                <div className={hasArchitecture || situation || task || action ? "border-t border-[#22282B] pt-6 sm:pt-8" : ""}>
                   <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#3FC7B0]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0]" />
                     <span>Result (Measurable Impact & Metrics)</span>
@@ -252,19 +277,18 @@ export default async function ProjectCaseStudyPage({ params }: Props) {
               ) : null}
 
               {keyFeatures.length > 0 ? (
-                <div className={architecture || situation || task || action || result ? "border-t border-[#22282B] pt-6 sm:pt-8" : ""}>
+                <div className={hasArchitecture || situation || task || action || result ? "border-t border-[#22282B] pt-6 sm:pt-8" : ""}>
                   <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#3FC7B0]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3FC7B0]" />
                     <span>Key Features</span>
                   </div>
-                  <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <div className="mt-4 space-y-2.5 sm:space-y-3">
                     {keyFeatures.map((feature, i) => (
-                      <div
-                        key={i}
-                        className="flex items-start gap-2.5 rounded-lg border border-[#22282B] bg-[#0E1113] p-3 transition-colors hover:border-[#3FC7B0]/40"
-                      >
-                        <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[#3FC7B0]" />
-                        <span className="font-mono text-xs font-light text-[#E7EAEA] leading-relaxed">
+                      <div key={i} className="flex items-start gap-2 sm:gap-2.5">
+                        <span className="font-mono text-xs sm:text-sm font-bold text-[#3FC7B0] select-none shrink-0 leading-tight">
+                          &gt;
+                        </span>
+                        <span className="font-mono text-xs sm:text-[13px] font-light text-[#E7EAEA]/90 leading-relaxed">
                           {feature}
                         </span>
                       </div>

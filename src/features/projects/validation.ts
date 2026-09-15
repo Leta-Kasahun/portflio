@@ -23,6 +23,21 @@ export const projectSchema = z.object({
   task: z.string().optional().nullable(),
   action: z.string().optional().nullable(),
   result: z.string().optional().nullable(),
+  architecturePattern: z.string().optional().nullable(),
+  architectureNodes: z
+    .array(
+      z.object({
+        id: z.string(),
+        layer: z.string(),
+        name: z.string(),
+        badge: z.string().optional().nullable(),
+        protocol: z.string().optional().nullable(),
+        role: z.string(),
+        specifications: z.array(z.string()).default([]),
+      })
+    )
+    .optional()
+    .nullable(),
 });
 
 export type ProjectInput = z.infer<typeof projectSchema>;
