@@ -176,13 +176,13 @@ export default async function ProjectCaseStudyPage({ params }: Props) {
           </div>
 
           {project.coverImage ? (
-            <div className="relative mt-6 sm:mt-8 aspect-[16/9] w-full overflow-hidden rounded-tl-[20px] sm:rounded-tl-[32px] rounded-br-[20px] sm:rounded-br-[32px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D]">
+            <div className="relative mt-6 sm:mt-8 aspect-[16/9] w-full overflow-hidden rounded-tl-[20px] sm:rounded-tl-[32px] rounded-br-[20px] sm:rounded-br-[32px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#0E1113]">
               <Image
                 src={project.coverImage}
                 alt={project.title}
                 fill
                 sizes="(max-width: 1024px) 100vw, 896px"
-                className="object-cover"
+                className="object-contain"
                 priority
                 unoptimized
               />

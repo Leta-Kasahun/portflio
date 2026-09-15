@@ -43,14 +43,14 @@ export default async function ProjectsPage() {
                 className="group relative flex flex-col justify-between w-full max-w-full min-w-0 overflow-hidden rounded-tl-[20px] sm:rounded-tl-[32px] rounded-br-[20px] sm:rounded-br-[32px] rounded-tr-none rounded-bl-none border-2 border-[#22282B] bg-[#171B1D] p-3 xs:p-5 sm:p-6 shadow-2xl transition-all duration-300 hover:border-[#3FC7B0]/60 hover:-translate-y-1"
               >
                 <div>
-                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-tl-[14px] sm:rounded-tl-[20px] rounded-br-[14px] sm:rounded-br-[20px] rounded-tr-none rounded-bl-none border border-[#22282B] bg-[#0E1113] mb-3 sm:mb-4">
+                  <div className="relative aspect-[16/9] w-full overflow-hidden rounded-tl-[14px] sm:rounded-tl-[20px] rounded-br-[14px] sm:rounded-br-[20px] rounded-tr-none rounded-bl-none border border-[#22282B] bg-[#0E1113] mb-3 sm:mb-4">
                     {project.coverImage ? (
                       <Image
                         src={project.coverImage}
                         alt={project.title}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="object-contain scale-[1.06] transition-transform duration-500 group-hover:scale-[1.10]"
                         unoptimized
                       />
                     ) : (
