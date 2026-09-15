@@ -56,7 +56,3 @@ A modern, responsive portfolio web application designed to showcase software eng
 
 ---
 
-## Links
-
-- **Repository**: [github.com/letakasahun](https://github.com/letakasahun)
-- **Contact**: [letakasahun2@gmail.com](mailto:letakasahun2@gmail.com)
