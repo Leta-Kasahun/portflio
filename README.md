@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Leta Kasahun — Portfolio Web Application
 
-## Getting Started
+![Portfolio Hero Screenshot](./public/certificates/image.png)
 
-First, run the development server:
+A modern, responsive portfolio web application designed to showcase software engineering projects, deep-dive case studies, interactive system architecture flows, and technical competencies.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Sections Overview
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Hero Section
+- High-impact introduction with profile details and quick action links (View Projects, Contact, View Resume).
+- Direct access to external profiles (GitHub, LinkedIn, Telegram, Email).
+- Fast, clean visual presentation with optimized assets.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. Projects & Case Studies
+- Featured project gallery with live demo previews and repository links.
+- Structured technical case studies highlighting the engineering objective, implementation steps, and measurable results.
+- Key deliverables presented with terminal-styled bullet points (`>`).
 
-## Learn More
+### 3. Interactive System Architecture
+- Visual system architecture diagrams embedded directly within project case studies.
+- Interactive nodes that visitors can click to inspect component roles, communication protocols, and technical specifications.
 
-To learn more about Next.js, take a look at the following resources:
+### 4. Technical Skills Matrix
+- Structured overview of technical abilities grouped by category (Frontend, Backend, Databases, Cloud & DevOps, Core Concepts).
+- Clear representation of technical proficiency and tools used across projects.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 5. Experience & Education
+- Career history outlining engineering roles, team contributions, and key deliverables.
+- Academic background in Software Engineering with milestones.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 6. Certificates & Resume with PDF Viewers
+- Built-in PDF reader modals for verified certificates and resume documents.
+- Allows visitors to inspect credentials and download files directly in the browser without leaving the page.
 
-## Deploy on Vercel
+### 7. Live GitHub Activity
+- Real-time GitHub integration showcasing public commit activity and repository contributions.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 8. Command Palette Search
+- Fast command center accessible via `⌘K` or `Ctrl+K` on desktop and touch controls on mobile.
+- Allows instant search and navigation across all pages, projects, and actions.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 9. Contact Section
+- Integrated contact form and direct communication channels for project discussions and inquiries.
+
+---
+
+## Core Characteristics
+
+- **Built with Next.js**: Utilizes modern App Router and server rendering for clean structure and fast execution.
+- **Fully Responsive**: Carefully tuned layout for smartphones, tablets, and wide monitors.
+- **Fast Performance & Lazy Loading**: Smooth scrolling and on-demand asset loading for an instant user experience.
+- **Modern Styling**: Tailwind CSS with custom terminal aesthetic, subtle borders, and glassmorphic elements.
+- **Database Backed**: PostgreSQL managed through Prisma for project and content management.
+
+---
+
+## Links
+
+- **Repository**: [github.com/letakasahun](https://github.com/letakasahun)
+- **Contact**: [letakasahun2@gmail.com](mailto:letakasahun2@gmail.com)
