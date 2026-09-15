@@ -19,17 +19,28 @@ import { SectionDivider } from "@/components/ui/SectionDivider";
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const profile = await getProfile();
-  const socialLinks = await getAllSocialLinks();
-  const educations = await getAllEducations();
-  const featuredProjects = await getFeaturedProjects();
-  const skillsGrouped = await getSkillsGroupedByCategory();
-  const experiences = await getAllExperiences();
-  const certificates = await getAllCertificates();
-  const githubStats = await getGitHubStats("Leta-Kasahun");
+  const [
+    profile,
+    socialLinks,
+    educations,
+    featuredProjects,
+    skillsGrouped,
+    experiences,
+    certificates,
+    githubStats,
+  ] = await Promise.all([
+    getProfile(),
+    getAllSocialLinks(),
+    getAllEducations(),
+    getFeaturedProjects(),
+    getSkillsGroupedByCategory(),
+    getAllExperiences(),
+    getAllCertificates(),
+    getGitHubStats("Leta-Kasahun"),
+  ]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-[#0E1113]">
       <HeroSection profile={profile} socialLinks={socialLinks} />
       <SectionDivider speed={1.1} />
       <AboutSection profile={profile} educations={educations} />

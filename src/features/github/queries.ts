@@ -103,27 +103,39 @@ function calculateStreaks(days: ContributionDay[]) {
   return { longestStreak, currentStreak, activeWeeks };
 }
 
+let cachedStats: { data: GitHubStats; timestamp: number } | null = null;
+const CACHE_TTL_MS = 15 * 60 * 1000;
+
 export async function getGitHubStats(username = "Leta-Kasahun"): Promise<GitHubStats> {
+  if (cachedStats && Date.now() - cachedStats.timestamp < CACHE_TTL_MS) {
+    return cachedStats.data;
+  }
+
   try {
+    const fetchOptions = {
+      signal: AbortSignal.timeout(1200),
+      next: { revalidate: 3600 },
+    };
+
     const [contribRes, userRes, prsRes, commitsRes, reposRes] = await Promise.allSettled([
       fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`, {
-        next: { revalidate: 3600 },
+        ...fetchOptions,
         headers: { Accept: "application/json" },
       }),
       fetch(`https://api.github.com/users/${username}`, {
-        next: { revalidate: 3600 },
+        ...fetchOptions,
         headers: { "User-Agent": "Portfolio-App", Accept: "application/vnd.github.v3+json" },
       }),
       fetch(`https://api.github.com/search/issues?q=author:${username}+type:pr`, {
-        next: { revalidate: 3600 },
+        ...fetchOptions,
         headers: { "User-Agent": "Portfolio-App", Accept: "application/vnd.github.v3+json" },
       }),
       fetch(`https://api.github.com/search/commits?q=author:${username}`, {
-        next: { revalidate: 3600 },
+        ...fetchOptions,
         headers: { "User-Agent": "Portfolio-App", Accept: "application/vnd.github.cloak-preview" },
       }),
       fetch(`https://api.github.com/users/${username}/repos?per_page=100`, {
-        next: { revalidate: 3600 },
+        ...fetchOptions,
         headers: { "User-Agent": "Portfolio-App", Accept: "application/vnd.github.v3+json" },
       }),
     ]);
@@ -187,7 +199,7 @@ export async function getGitHubStats(username = "Leta-Kasahun"): Promise<GitHubS
 
         const { longestStreak, currentStreak, activeWeeks } = calculateStreaks(days);
 
-        return {
+        const result: GitHubStats = {
           username,
           totalContributions,
           totalCommits,
@@ -199,6 +211,8 @@ export async function getGitHubStats(username = "Leta-Kasahun"): Promise<GitHubS
           stars,
           days,
         };
+        cachedStats = { data: result, timestamp: Date.now() };
+        return result;
       }
     }
 
@@ -208,7 +222,7 @@ export async function getGitHubStats(username = "Leta-Kasahun"): Promise<GitHubS
     const calculatedFallbackTotal = fallbackDays.reduce((sum, item) => sum + item.count, 0);
     const { longestStreak, currentStreak, activeWeeks } = calculateStreaks(fallbackDays);
 
-    return {
+    const fallbackResult: GitHubStats = {
       username,
       totalContributions: calculatedFallbackTotal + 600,
       totalCommits: calculatedFallbackTotal + 600,
@@ -220,5 +234,7 @@ export async function getGitHubStats(username = "Leta-Kasahun"): Promise<GitHubS
       stars: 0,
       days: fallbackDays,
     };
+    cachedStats = { data: fallbackResult, timestamp: Date.now() };
+    return fallbackResult;
   }
 }
