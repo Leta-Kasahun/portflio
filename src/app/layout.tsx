@@ -91,6 +91,16 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  icons: {
+    icon: [
+      { url: "/images/hero.JPG", sizes: "192x192", type: "image/jpeg" },
+      { url: "/images/hero.JPG", sizes: "512x512", type: "image/jpeg" },
+    ],
+    apple: [
+      { url: "/images/hero.JPG", sizes: "180x180", type: "image/jpeg" },
+    ],
+    shortcut: "/images/hero.JPG",
+  },
   verification: {
     google:
       process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
@@ -170,6 +180,7 @@ export default function RootLayout({
       className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} ${instrumentSerif.variable} dark h-full antialiased`}
     >
       <head>
+        <meta name="thumbnail" content={`${siteUrl}/images/hero.JPG`} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
